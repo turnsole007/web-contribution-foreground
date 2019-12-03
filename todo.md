@@ -30,3 +30,15 @@
 TODO
 *RankList     table表头固定加滚动条*
 *登录注册页是否不显示导航栏*
+
+
+1. 问题：
+token 存在本地缓存，看看怎么更改
+项目开发版和发布版
+静态资源路径
+阿里云环境
+conf ->  index.js  环境的配置  改成环境变量
+
+
+
+*computed    mounted   怎么运行*

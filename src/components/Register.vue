@@ -8,6 +8,8 @@
       <br>
       <input type="text" v-model="githubid" placeholder="githubID"/>
       <br>
+      <input type="text" v-model="school" placeholder="学校名称"/>
+      <br>
       <input type="text" v-model="email" placeholder="邮箱"/>
       <br>
       <input type="password" v-model="password" placeholder="密码"/>
@@ -28,6 +30,7 @@ export default {
       githubid: '',
       email: '',
       password: '',
+      school: '',
       info: {}
     }
   },
@@ -43,7 +46,8 @@ export default {
             username: this.username,
             password: this.password,
             githubid: this.githubid,
-            email: this.email
+            email: this.email,
+            school: this.school
           },
           transformRequest: [function (data) {
             let ret = ''
