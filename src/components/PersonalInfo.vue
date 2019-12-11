@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <h1>个人主页</h1>
+  <div class="info-container">
+    <div class="title-container">
+      <h3 class="title">个人主页</h3>
+    </div>
     <div class="error"> {{ error.errors }} </div>
     <div>
       <ul class="text">用户名 :</ul>
@@ -15,7 +17,7 @@
       <ul class="info"> {{ info.issuescore }} </ul>
     </div>
     <br>
-    <button class="but" @click="getUserContrbScore">刷新</button>
+    <el-button class="refresh" type="primary" @click.native="getUserContrbScore">refresh</el-button>
   </div>
 </template>
 
@@ -54,6 +56,43 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.info-container {
+  text-align: center;
+}
+.info {
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  height: 40px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color:black;
+  text-shadow:1px 1px 1px;
+  border-radius: 4px;
+  background-color: rgb(163, 163, 163);
+}
+.text {
+  position: relative;
+  display: inline-block;
+  width: 130px;
+  height: 20px;
+  font-size: 18px;
+  text-shadow:0px 0px 1px;
+}
 
+.title-container {
+  position: relative;
+
+  .title {
+    font-size: 26px;
+    color: black;
+    text-align: center;
+    font-weight: bold;
+  }
+}
+.refresh{
+  width:100px;
+}
 </style>

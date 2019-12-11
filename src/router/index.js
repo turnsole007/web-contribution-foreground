@@ -13,23 +13,33 @@ const router = new Router({
     {
       path: '/index',
       name: 'Index',
-      component: Index
+      component: Index,
+      meta: {
+        keepAlive: true
+      }
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: Register,
+      meta: {
+        keepAlive: false
+      }
     },
     {
       path: '/getranklist',
       name: 'RankList',
       meta: {
-        requireAuth: true
+        requireAuth: true,
+        keepAlive: true
       },
       component: RankList
     },
@@ -37,7 +47,8 @@ const router = new Router({
       path: '/personal',
       name: 'PersonalInfo',
       meta: {
-        requireAuth: true
+        requireAuth: true,
+        keepAlive: true
       },
       component: PersonalInfo
     },
@@ -45,7 +56,8 @@ const router = new Router({
       path: '/update',
       name: 'Update',
       meta: {
-        requireAuth: true
+        requireAuth: true,
+        keepAlive: true
       },
       component: Update
     }
