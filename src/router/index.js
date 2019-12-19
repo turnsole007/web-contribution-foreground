@@ -13,33 +13,33 @@ const router = new Router({
     {
       path: '/index',
       name: 'Index',
-      component: Index,
-      meta: {
+      component: Index
+      /* meta: {
         keepAlive: true
-      }
+      } */
     },
     {
       path: '/login',
       name: 'Login',
-      component: Login,
-      meta: {
+      component: Login
+      /* meta: {
         keepAlive: false
-      }
+      } */
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register,
-      meta: {
+      component: Register
+      /* meta: {
         keepAlive: false
-      }
+      } */
     },
     {
       path: '/getranklist',
       name: 'RankList',
       meta: {
-        requireAuth: true,
-        keepAlive: true
+        requireAuth: true
+        // keepAlive: true
       },
       component: RankList
     },
@@ -47,8 +47,8 @@ const router = new Router({
       path: '/personal',
       name: 'PersonalInfo',
       meta: {
-        requireAuth: true,
-        keepAlive: true
+        requireAuth: true
+        // keepAlive: true
       },
       component: PersonalInfo
     },
@@ -56,8 +56,8 @@ const router = new Router({
       path: '/update',
       name: 'Update',
       meta: {
-        requireAuth: true,
-        keepAlive: true
+        requireAuth: true
+        // keepAlive: true
       },
       component: Update
     }
@@ -68,8 +68,9 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem('token')) {
       next()
     } else {
+      alert('请先登录')
       next({
-        path: '/login',
+        path: '/index',
         query: {redirect: to.fullPath}
       })
     }

@@ -1,22 +1,25 @@
 <template>
   <div id="app">
-    <div v-if="$route.meta.keepAlive">
+    <!-- <div v-if="$route.meta.keepAlive">
       <Navigator></Navigator>
       <router-view />
-      <!-- <Footer></Footer> -->
+      <Footer></Footer>
     </div>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <router-view v-if="!$route.meta.keepAlive"></router-view> -->
+    <Navigator></Navigator>
+    <router-view />
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
 import Navigator from './components/Navigator'
-// import Footer from './components/Footer'
+import Footer from './components/Footer'
 export default {
   name: 'App',
   components: {
-    Navigator
-    // Footer
+    Navigator,
+    Footer
   }
 }
 </script>

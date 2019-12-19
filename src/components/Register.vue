@@ -1,100 +1,93 @@
 <template>
-  <div class="register-container">
-    <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form" auto-complete="on" label-position="left">
+  <el-dialog :visible.sync="showRegister" title="Register Form" @close="closeRegisterDialog" center>
+    <div class="register-container">
+      <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form" auto-complete="on" label-position="left">
 
-      <div class="title-container">
-        <h3 class="title">Register Form</h3>
-      </div>
+        <el-form-item prop="username">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="username"
+            v-model="registerForm.username"
+            placeholder="Username"
+            name="username"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="registerForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <el-form-item prop="github_id">
+          <span class="svg-container">
+            <svg-icon icon-class="github" />
+          </span>
+          <el-input
+            ref="github_id"
+            v-model="registerForm.github_id"
+            placeholder="GithubID"
+            name="github_id"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-form-item prop="github_id">
-        <span class="svg-container">
-          <svg-icon icon-class="github" />
-        </span>
-        <el-input
-          ref="github_id"
-          v-model="registerForm.github_id"
-          placeholder="GithubID"
-          name="github_id"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <el-form-item prop="email">
+          <span class="svg-container">
+            <svg-icon icon-class="email" />
+          </span>
+          <el-input
+            ref="email"
+            v-model="registerForm.email"
+            placeholder="Email"
+            name="email"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-form-item prop="email">
-        <span class="svg-container">
-          <svg-icon icon-class="email" />
-        </span>
-        <el-input
-          ref="email"
-          v-model="registerForm.email"
-          placeholder="Email"
-          name="email"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <el-form-item prop="school">
+          <span class="svg-container">
+            <svg-icon icon-class="school" />
+          </span>
+          <el-input
+            ref="school"
+            v-model="registerForm.school"
+            placeholder="School"
+            name="school"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-form-item prop="school">
-        <span class="svg-container">
-          <svg-icon icon-class="school" />
-        </span>
-        <el-input
-          ref="school"
-          v-model="registerForm.school"
-          placeholder="School"
-          name="school"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="registerForm.password"
+            :type="passwordType"
+            placeholder="Password"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            @keyup.enter.native="handleRegister"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="registerForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleRegister"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
-      </el-form-item>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleRegister">Register</el-button>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleRegister">Register</el-button>
-
-      <div class="tips" style="text-align:center;">
-        <span>已有账号？</span>
-        <a href="/#/login">立即登录</a>
-      </div>
-
-    </el-form>
-  </div>
+      </el-form>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -104,6 +97,12 @@ import { Message } from 'element-ui'
 
 export default {
   name: 'Register',
+  props: {
+    showRegister: {
+      type: Boolean,
+      default: () => { return false }
+    }
+  },
   data () {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {
@@ -136,7 +135,7 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits or characters'))
+        callback(new Error('The password can not be less than 6 characters'))
       } else {
         callback()
       }
@@ -202,7 +201,9 @@ export default {
                 // TODO  跳转到首页
                 alert('注册成功')
                 this.loading = false
-                this.$router.push('/login')
+                // this.$router.push('/login')
+                // alert('getIsRegister')
+                this.$emit('getIsRegister', true)
               } else {
                 Message({
                   message: response.data,
@@ -219,6 +220,9 @@ export default {
           return false
         }
       })
+    },
+    closeRegisterDialog () {
+      this.$emit('closeRegisterDialog', false)
     }
   }
 }
@@ -264,16 +268,10 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    // background: rgba(0, 0, 0, 0.1);
+    background: $bg;
     border-radius: 5px;
     color: #454545;
-  }
-
-  a:visited{
-    color: #2980DB;
-  }
-  a:hover{
-    color: cornsilk;
   }
 }
 </style>
@@ -286,14 +284,15 @@ $light_gray:#eee;
 .register-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  // background-color: $bg;
   overflow: hidden;
 
   .register-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    // padding: 160px 35px 0;
+    padding: 10px 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }

@@ -13,17 +13,17 @@
       highlight-current-row
       :default-sort = "{prop: 'codescore', order: 'descending'}"
     >
-      <el-table-column align="center" label="ID" width="80">
+      <el-table-column align="center" label="ID" width="120">
         <template slot-scope="scope">
           {{ scope.$index+1  }}
         </template>
       </el-table-column>
-      <el-table-column label="username" width="120" align="center">
+      <el-table-column label="username" align="center">
         <template slot-scope="scope">
-          {{ scope.row.username }}
+          <a href="/#/personal" target="_blank">{{ scope.row.username }}</a>
         </template>
       </el-table-column>
-      <el-table-column label="school" prop="school" sortable width="120" align="center">
+      <!-- <el-table-column label="school" prop="school" sortable width="120" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.school }}</span>
         </template>
@@ -32,7 +32,7 @@
         <template slot-scope="scope">
           <span>{{ scope.row.githubid }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="codescore" prop="codescore" sortable align="center">
         <template slot-scope="scope">
           {{ scope.row.codescore }}
@@ -95,6 +95,8 @@ export default {
 .el-table{
   border-color: #7e7e80;
   font-size: 15px;
+  margin-left: 10%;
+  width: 80%;
   color: black;
 }
 .rank_refresh{
@@ -102,5 +104,11 @@ export default {
   width:20%;
   margin-right: 20px;
   margin-bottom:20px;
+}
+a {
+  color: rgb(27, 135, 230);
+}
+a:hover {
+  color: rgb(180, 45, 52);
 }
 </style>

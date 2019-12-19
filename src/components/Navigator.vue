@@ -12,49 +12,56 @@
       <el-menu-item index="index">首页</el-menu-item>
       <el-menu-item index="getranklist">排行榜</el-menu-item>
       <el-menu-item index="personal">个人主页</el-menu-item>
-      <el-submenu index="2" class="right-item">
+      <el-submenu v-if="islogin" index="2" class="right-item">
         <template slot="title">
           <img src="../assets/picture/img.gif" class="user-avatar">
         </template>
         <el-menu-item index="update">信息修改</el-menu-item>
         <el-menu-item @click="logout">登出</el-menu-item>
       </el-submenu>
-      <!-- <div class="right-menu">
-        <el-dropdown class="avatar-container" trigger="click">
-          <div class="avatar-wrapper">
-            <img src="../assets/picture/img.gif" class="user-avatar">
-            <i class="el-icon-caret-bottom" />
-          </div>
-          <el-dropdown-menu slot="dropdown" class="user-dropdown">
-            <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-              <el-dropdown-item>Github</el-dropdown-item>
-            </a>
-            <a target="_blank" href="/#/update">
-              <el-dropdown-item>信息修改</el-dropdown-item>
-            </a>
-            <el-dropdown-item divided>
-              <span style="display:block;" @click="logout">Log Out</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div> -->
+      <el-button v-if="!islogin" type="text" class="right-nav-button" @click="showLoginDialog">登录</el-button>
+      <el-button v-if="!islogin" type="text" class="right-nav-button" @click="showRegiterDialog">注册</el-button>
     </el-menu>
+
+    <!-- Login -->
+    <Login :showLogin='loginDialogVisible' @getIsLogin="getValueFromLogin" @closeLoginDialog="getIsCloseFromLogin"></Login>
+
+    <!-- register -->
+    <Register :showRegister='registerDialogVisible' @getIsRegister="getValueFromRegister" @closeRegisterDialog="getIsCloseFromRegister"></Register>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Login from './Login'
+import Register from './Register'
+
 export default {
   name: 'Navigator',
+  components: {
+    Login,
+    Register
+  },
   data () {
     return {
+      // navgator
       activeIndex: 'index',
-      activeIndex2: 'index'
+      activeIndex2: 'index',
+      islogin: false,
+
+      loginDialogVisible: false,
+      registerDialogVisible: false
     }
   },
   methods: {
     handleSelect (key, keyPath) {
       console.log(key, keyPath)
+    },
+    showLoginDialog () {
+      this.loginDialogVisible = !this.loginDialogVisible
+    },
+    showRegiterDialog () {
+      this.registerDialogVisible = !this.registerDialogVisible
     },
     logout () {
       if (localStorage.getItem('token')) {
@@ -68,6 +75,7 @@ export default {
               alert('成功退出!')
               localStorage.removeItem('token')
               this.$router.push('/index')
+              this.islogin = false
             } else {
               alert('登出失败，请再次尝试！')
             }
@@ -77,63 +85,26 @@ export default {
         alert('尚未登录，请登录！')
         this.$router.push('/login')
       }
+    },
+    getValueFromLogin (input) {
+      this.islogin = input
+      this.loginDialogVisible = false
+    },
+    getValueFromRegister (input) {
+      this.loginDialogVisible = input
+      this.registerDialogVisible = false
+    },
+    getIsCloseFromLogin (input) {
+      this.loginDialogVisible = input
+    },
+    getIsCloseFromRegister (input) {
+      this.registerDialogVisible = input
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-/* .right-menu {
-  float: right;
-  height: 100%;
-
-  &:focus {
-    outline: none;
-  }
-
-  .right-menu-item {
-    display: inline-block;
-    padding: 0 8px;
-    height: 100%;
-    font-size: 18px;
-    color: #5a5e66;
-    vertical-align: text-bottom;
-
-    &.hover-effect {
-      cursor: pointer;
-      transition: background .3s;
-
-      &:hover {
-        background: rgba(0, 0, 0, .025)
-      }
-    }
-  }
-
-  .avatar-container {
-    margin-right: 30px;
-
-    .avatar-wrapper {
-      margin-top: 10px;
-      position: relative;
-
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
-      .el-icon-caret-bottom {
-        cursor: pointer;
-        position: absolute;
-        right: -20px;
-        top: 20px;
-        font-size: 15px;
-        color: aliceblue
-      }
-    }
-  }
-} */
 .right-item {
   float: right;
   height: 100%;
@@ -143,5 +114,12 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 10px;
+}
+.right-nav-button {
+  float: right;
+  height: 100%;
+  margin-top: 15px;
+  margin-right: 15px;
+  padding: 8px 12px;
 }
 </style>

@@ -1,55 +1,47 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+  <el-dialog :visible.sync="showLogin" title="Login Form" @close="closeLoginDialog" center>
+    <div class="login-container">
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+        <el-form-item prop="username">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="username"
+            v-model="loginForm.username"
+            placeholder="Username"
+            name="username"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
-      </div>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="Password"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
 
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
-      </el-form-item>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div class="tips" style="text-align:center;">
-        <span>没有账号？</span>
-        <a href="/#/register">立即注册</a>
-      </div>
-
-    </el-form>
-  </div>
+      </el-form>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -59,6 +51,12 @@ import { Message } from 'element-ui'
 
 export default {
   name: 'Login',
+  props: {
+    showLogin: {
+      type: Boolean,
+      default: () => { return false }
+    }
+  },
   data () {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 1) {
@@ -85,7 +83,10 @@ export default {
       },
       loading: false,
       passwordType: 'password',
-      redirect: undefined
+      redirect: undefined,
+
+      islogin: false,
+      showDialog: false
     }
   },
   watch: {
@@ -125,7 +126,10 @@ export default {
                 localStorage.token = this.loginForm.username
                 alert('登录成功')
                 this.loading = false
-                this.$router.push('/index')
+                // this.$router.push('/index')
+                this.showLogin = false
+                this.islogin = true
+                this.$emit('getIsLogin', this.islogin)
               } else {
                 Message({
                   message: response.data,
@@ -142,6 +146,9 @@ export default {
           return false
         }
       })
+    },
+    closeLoginDialog () {
+      this.$emit('closeLoginDialog', false)
     }
   }
 }
@@ -187,16 +194,10 @@ $cursor: #fff;
 
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    // background: rgba(0, 0, 0, 0.1);
+    background: $bg;
     border-radius: 5px;
     color: #454545;
-  }
-
-  a:visited{
-    color: #2980DB;
-  }
-  a:hover{
-    color: cornsilk;
   }
 }
 </style>
@@ -209,14 +210,15 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  // background-color: $bg;
   overflow: hidden;
 
   .login-form {
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    // padding: 160px 35px 0;
+    padding: 10px 35px 0;
     margin: 0 auto;
     overflow: hidden;
   }
