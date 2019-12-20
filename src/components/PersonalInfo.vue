@@ -5,10 +5,10 @@
     </div> -->
     <div class="error"> {{ error.errors }} </div>
     <!-- <div>{{ user }}</div>
-    <div class="error"> {{ info }} </div>
-    <div class="error" style="color:red;"> {{ info.contrbdetail }} </div>
-    <div class="error" style="color:blue;"> {{ info.contrbdetail[0] }} </div>
-    <div class="error" style="color:green;"> {{ info.contrbdetail[0].GithubId }} </div> -->
+    <div> {{ info }} </div>
+    <div style="color:red;"> {{ info.contrbdetail }} </div>
+    <div style="color:blue;"> {{ info.contrbdetail[0] }} </div>
+    <div style="color:green;"> {{ info.contrbdetail[0].GithubId }} </div> -->
     <el-row  type="flex" justify="space-around">
       <el-col :span="5" class="info_top_1">
         <div class="info_top_content">
@@ -21,7 +21,7 @@
       <el-col :span="5" class="info_top_2">
         <div class="info_top_text">
           <p class="title">codescore</p>
-          <p class="score">{{info.score.codescore}}</p>
+          <p class="score" type="text">{{ info.score.codescore }}</p>
         </div>
         <div>
           <img src="../assets/picture/web_developer.png" class="info_img">
@@ -82,7 +82,11 @@ export default {
   },
   methods: {
     getUserInfo: function () {
-      axios.get('/api/user')
+      let path = '/api/user'
+      if (JSON.stringify(this.$route.params).search('username') !== -1) {
+        path = path + '?username=' + this.$route.params.username
+      }
+      axios.get(path)
         .then(Response => {
           window.console.log(Response)
           if (Response.status === 200) {
@@ -94,7 +98,11 @@ export default {
         .catch(error => console.log(error))
     },
     getUserContrbScore: function () {
-      axios.get('/api/contrbscore')
+      let path = '/api/contrbscore'
+      if (JSON.stringify(this.$route.params).search('username') !== -1) {
+        path = path + '?username=' + this.$route.params.username
+      }
+      axios.get(path)
         .then(Response => {
           window.console.log(Response)
           if (Response.status === 200) {

@@ -20,7 +20,8 @@
       </el-table-column>
       <el-table-column label="username" align="center">
         <template slot-scope="scope">
-          <a href="/#/personal" target="_blank">{{ scope.row.username }}</a>
+          <!-- <a :href="'/#/personal/'+scope.row.username" target="_blank" rel="noopener noreferrer">{{ scope.row.username }}</a> -->
+          <router-link :to="{ name:'Homepage', params: { username: scope.row.username }}"> {{ scope.row.username }} </router-link>
         </template>
       </el-table-column>
       <!-- <el-table-column label="school" prop="school" sortable width="120" align="center">

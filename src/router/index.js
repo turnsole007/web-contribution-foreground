@@ -44,6 +44,15 @@ const router = new Router({
       component: RankList
     },
     {
+      path: '/homepage/:username',
+      name: 'Homepage',
+      meta: {
+        requireAuth: true
+        // keepAlive: true
+      },
+      component: PersonalInfo
+    },
+    {
       path: '/personal',
       name: 'PersonalInfo',
       meta: {

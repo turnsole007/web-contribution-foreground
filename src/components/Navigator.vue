@@ -9,9 +9,9 @@
       text-color="#fff"
       active-text-color="#ffd04b"
       router=true>
-      <el-menu-item index="index">首页</el-menu-item>
-      <el-menu-item index="getranklist">排行榜</el-menu-item>
-      <el-menu-item index="personal">个人主页</el-menu-item>
+      <el-menu-item index="/index">首页</el-menu-item>
+      <el-menu-item index="/getranklist">排行榜</el-menu-item>
+      <el-menu-item index="/personal">个人主页</el-menu-item>
       <el-submenu v-if="islogin" index="2" class="right-item">
         <template slot="title">
           <img src="../assets/picture/img.gif" class="user-avatar">
@@ -45,8 +45,8 @@ export default {
   data () {
     return {
       // navgator
-      activeIndex: 'index',
-      activeIndex2: 'index',
+      activeIndex: '/index',
+      activeIndex2: '/index',
       islogin: false,
 
       loginDialogVisible: false,
