@@ -5,6 +5,8 @@
 <script>
 import echarts from 'echarts'
 import resize from '../assets/js/resize'
+import axios from 'axios'
+import { formatDate } from '@/utils/date.js'
 
 export default {
   mixins: [resize],
@@ -28,11 +30,14 @@ export default {
   },
   data () {
     return {
-      chart: null
+      chart: null,
+      weekContrb: {},
+      error: {}
     }
   },
   mounted () {
-    this.initChart()
+    this.getWeekContrb()
+    // this.initChart()
   },
   beforeDestroy () {
     if (!this.chart) {
@@ -42,19 +47,39 @@ export default {
     this.chart = null
   },
   methods: {
+    getWeekContrb () {
+      var path = '/api/contrbscore/getweekscore'
+      axios.get(path)
+        .then(Response => {
+          window.console.log(Response)
+          if (Response.data.indexOf('errors') === -1) {
+            this.weekContrb = JSON.parse(Response.data)
+            this.initChart()
+          } else {
+            this.error = JSON.parse(Response.data)
+          }
+        })
+        .catch(error => console.log(error))
+    },
     initChart () {
+      var str = JSON.stringify(this.weekContrb)
+      window.console.log('weekContrb2' + str)
+      this.weekContrb.sort((a, b) => a.commit_timestap - b.commit_timestap)
+      const xData = []
+      const arrCodescore = []
+      const arrIssuescore = []
+      const arrTotalscore = []
+      for (let i in this.weekContrb) {
+        xData.push(this.getFormatDate(this.weekContrb[i].commit_timestap))
+        arrCodescore.push(this.weekContrb[i].codescore)
+        arrIssuescore.push(this.weekContrb[i].issuescore)
+        arrTotalscore.push(this.weekContrb[i].codescore + this.weekContrb[i].issuescore)
+      }
       this.chart = echarts.init(document.getElementById(this.id))
-      const xData = (function () {
-        const data = []
-        for (let i = 1; i < 13; i++) {
-          data.push(i + 'month')
-        }
-        return data
-      }())
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: 'statistics',
+          text: '成绩变化图',
           x: '20',
           top: '20',
           textStyle: {
@@ -66,6 +91,7 @@ export default {
             fontSize: '16'
           }
         },
+        // 图的类型
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -84,15 +110,17 @@ export default {
             color: '#fff'
           }
         },
+        // 图例
         legend: {
           x: '5%',
           top: '10%',
           textStyle: {
             color: '#90979c'
           },
-          data: ['female', 'male', 'average']
+          data: ['codescore', 'issuescore', 'total']
         },
         calculable: true,
+        // x坐标轴
         xAxis: [{
           type: 'category',
           axisLine: {
@@ -135,6 +163,7 @@ export default {
             show: false
           }
         }],
+        // 图表缩放
         dataZoom: [{
           show: true,
           height: 30,
@@ -162,7 +191,7 @@ export default {
           end: 35
         }],
         series: [{
-          name: 'female',
+          name: 'codescore',
           type: 'bar',
           stack: 'total',
           barMaxWidth: 35,
@@ -182,24 +211,10 @@ export default {
               }
             }
           },
-          data: [
-            709,
-            1917,
-            2455,
-            2610,
-            1719,
-            1433,
-            1544,
-            3285,
-            5208,
-            3372,
-            2484,
-            4078
-          ]
+          data: arrCodescore
         },
-
         {
-          name: 'male',
+          name: 'issuescore',
           type: 'bar',
           stack: 'total',
           itemStyle: {
@@ -215,25 +230,13 @@ export default {
               }
             }
           },
-          data: [
-            327,
-            1776,
-            507,
-            1200,
-            800,
-            482,
-            204,
-            1390,
-            1001,
-            951,
-            381,
-            220
-          ]
-        }, {
-          name: 'average',
+          data: arrIssuescore
+        },
+        {
+          name: 'total',
           type: 'line',
           stack: 'total',
-          symbolSize: 10,
+          symbolSize: 3,
           symbol: 'circle',
           itemStyle: {
             normal: {
@@ -248,23 +251,15 @@ export default {
               }
             }
           },
-          data: [
-            1036,
-            3693,
-            2962,
-            3810,
-            2519,
-            1915,
-            1748,
-            4675,
-            6209,
-            4323,
-            2865,
-            4298
-          ]
+          data: arrTotalscore
         }
         ]
       })
+    },
+    getFormatDate (timeStamp) {
+      var date = new Date(timeStamp * 1000)
+      // window.console.log(date)
+      return formatDate(date, 'yyyy.MM.dd')
     }
   }
 }

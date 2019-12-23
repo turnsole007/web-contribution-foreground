@@ -13,12 +13,13 @@ export default {
 
 <style scoped>
 .footer-container {
+  /* position:fixed; */
   height: 100px;
   background: #44474b;
   text-align: center;
   color: #fff;
   font-size: 12px;
   padding: 20px 0px;
-  margin-bottom: 0;
+  /* margin-bottom: 0; */
 }
 </style>

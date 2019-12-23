@@ -1,8 +1,5 @@
 ﻿<template>
-  <div class="info-container">
-    <!-- <div class="title-container">
-      <h3 class="title">个人主页</h3>
-    </div> -->
+  <div class="app-container">
     <div class="error"> {{ error.errors }} </div>
     <!-- <div>{{ user }}</div>
     <div> {{ info }} </div>
@@ -32,9 +29,7 @@
           <p class="title">issuescore</p>
           <p class="score">{{info.score.issuescore}}</p>
         </div>
-        <div>
-          <img src="../assets/picture/presentation_and_discussion.png" class="info_img">
-        </div>
+        <img src="../assets/picture/presentation_and_discussion.png" class="info_img">
       </el-col>
     </el-row>
     <div class="repo_container">
@@ -42,7 +37,7 @@
       <el-collapse v-for="(contrb,index) in info.contrbdetail" :key="index" accordion>
         <el-collapse-item>
           <template slot="title">
-            <a :href="'https://github.com/'+contrb.RepoName"> {{ contrb.RepoName }} </a>
+            <a :href="'https://github.com/'+contrb.RepoName" target="_blank"> {{ contrb.RepoName }} </a>
           </template>
           <div class="repo_detail">
             <div>
@@ -119,9 +114,6 @@ export default {
 
 <style lang="scss" scoped>
 
-.info-container {
-  margin: 10px;
-}
 .info_top_1 {
   background: #B68814;
   height: 140px;
@@ -152,7 +144,9 @@ export default {
   }
 }
 .info_img {
-  float: right;
+  // float: right;
+  position: absolute;
+  margin-left: 75px;
   display: block;
   height: 120px;
 }

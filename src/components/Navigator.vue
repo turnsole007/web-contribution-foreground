@@ -12,13 +12,31 @@
       <el-menu-item index="/index">首页</el-menu-item>
       <el-menu-item index="/getranklist">排行榜</el-menu-item>
       <el-menu-item index="/personal">个人主页</el-menu-item>
-      <el-submenu v-if="islogin" index="2" class="right-item">
+      <!-- <el-submenu v-if="islogin" index="2" class="right-item">
         <template slot="title">
           <img src="../assets/picture/img.gif" class="user-avatar">
         </template>
         <el-menu-item index="update">信息修改</el-menu-item>
         <el-menu-item @click="logout">登出</el-menu-item>
-      </el-submenu>
+      </el-submenu> -->
+      <div class="right-menu" v-if="islogin">
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          <img src="../assets/picture/img.gif" class="user-avatar">
+          <i class="el-icon-caret-bottom" />
+        </div>
+        <el-dropdown-menu slot="dropdown" class="user-dropdown">
+          <router-link to="update">
+            <el-dropdown-item>
+              信息修改
+            </el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="logout">Log Out</span>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
       <el-button v-if="!islogin" type="text" class="right-nav-button" @click="showLoginDialog">登录</el-button>
       <el-button v-if="!islogin" type="text" class="right-nav-button" @click="showRegiterDialog">注册</el-button>
     </el-menu>
@@ -105,21 +123,72 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.right-item {
-  float: right;
-  height: 100%;
-}
-.user-avatar {
-  cursor: pointer;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-}
+// .right-item {
+//   float: right;
+//   height: 100%;
+// }
+// .user-avatar {
+//   cursor: pointer;
+//   width: 40px;
+//   height: 40px;
+//   border-radius: 10px;
+// }
 .right-nav-button {
   float: right;
   height: 100%;
   margin-top: 15px;
   margin-right: 15px;
   padding: 8px 12px;
+}
+.right-menu {
+  float: right;
+  height: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  .right-menu-item {
+    display: inline-block;
+    padding: 0 8px;
+    height: 100%;
+    font-size: 18px;
+    color: #5a5e66;
+    vertical-align: text-bottom;
+
+    &.hover-effect {
+      cursor: pointer;
+      transition: background .3s;
+
+      &:hover {
+        background: rgba(0, 0, 0, .025)
+      }
+    }
+  }
+
+  .avatar-container {
+    margin-right: 30px;
+
+    .avatar-wrapper {
+      margin-top: 10px;
+      position: relative;
+
+      .user-avatar {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+
+      .el-icon-caret-bottom {
+        cursor: pointer;
+        color: #fff;
+        position: absolute;
+        right: -20px;
+        top: 15px;
+        font-size: 12px;
+      }
+    }
+  }
 }
 </style>

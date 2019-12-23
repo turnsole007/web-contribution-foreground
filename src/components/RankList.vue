@@ -102,8 +102,8 @@ export default {
 }
 .rank_refresh{
   float: right;
-  width:20%;
-  margin-right: 20px;
+  width:15%;
+  margin-right: 10%;
   margin-bottom:20px;
 }
 a {
