@@ -8,7 +8,7 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      router=true>
+      router>
       <el-menu-item index="/index">首页</el-menu-item>
       <el-menu-item index="/getranklist">排行榜</el-menu-item>
       <el-menu-item index="/personal">个人主页</el-menu-item>

@@ -49,6 +49,9 @@ export default {
   methods: {
     getWeekContrb () {
       var path = '/api/contrbscore/getweekscore'
+      if (JSON.stringify(this.$route.params).search('username') !== -1) {
+        path = path + '?username=' + this.$route.params.username
+      }
       axios.get(path)
         .then(Response => {
           window.console.log(Response)
@@ -62,8 +65,8 @@ export default {
         .catch(error => console.log(error))
     },
     initChart () {
-      var str = JSON.stringify(this.weekContrb)
-      window.console.log('weekContrb2' + str)
+      // var str = JSON.stringify(this.weekContrb)
+      // window.console.log('weekContrb2' + str)
       this.weekContrb.sort((a, b) => a.commit_timestap - b.commit_timestap)
       const xData = []
       const arrCodescore = []

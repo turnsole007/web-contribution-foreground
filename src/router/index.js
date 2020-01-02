@@ -6,6 +6,8 @@ import Register from '@/components/Register'
 import RankList from '@/components/RankList'
 import PersonalInfo from '@/components/PersonalInfo'
 import Update from '@/components/Update'
+import Certification from '@/components/Certification'
+import Entity from '@/components/Entity'
 Vue.use(Router)
 
 const router = new Router({
@@ -69,6 +71,22 @@ const router = new Router({
         // keepAlive: true
       },
       component: Update
+    },
+    {
+      path: '/certification',
+      name: 'Certification',
+      meta: {
+        requireAuth: true
+      },
+      component: Certification
+    },
+    {
+      path: '/entity/:username',
+      name: 'Entity',
+      meta: {
+        requireAuth: true
+      },
+      component: Entity
     }
   ]
 })
