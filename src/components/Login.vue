@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showLogin" title="Login Form" @close="closeLoginDialog" center>
+  <el-dialog :visible="showLogin" title="Login Form" @close="closeLoginDialog" center>
     <div class="login-container">
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
         <el-form-item prop="username">
@@ -53,8 +53,7 @@ export default {
   name: 'Login',
   props: {
     showLogin: {
-      type: Boolean,
-      default: () => { return false }
+      type: Boolean
     }
   },
   data () {
@@ -85,8 +84,7 @@ export default {
       passwordType: 'password',
       redirect: undefined,
 
-      islogin: false,
-      showDialog: false
+      islogin: false
     }
   },
   watch: {
@@ -127,7 +125,7 @@ export default {
                 alert('登录成功')
                 this.loading = false
                 // this.$router.push('/index')
-                this.showLogin = false
+                // this.showLogin = false
                 this.islogin = true
                 this.$emit('getIsLogin', this.islogin)
               } else {

@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <div style="margin:30px;font-size:20px;">填写学生信息</div>
-      <el-form-item label="真 实 姓 名">
+      <el-form-item prop="name" label="真 实 姓 名">
         <el-input v-model="form.name" placeholder="请输入真实姓名"/>
       </el-form-item>
-      <el-form-item label="身 份 证 号 码" >
+      <el-form-item prop="Id_number" label="身 份 证 号 码" >
         <el-input v-model="form.Id_number" placeholder="请输入身份证号码"/>
       </el-form-item>
       <!-- <el-form-item label="学 校 所 在 地">
@@ -14,21 +14,24 @@
       <!-- <el-form-item label="学 校 名 称" >
         <el-input v-model="form.school" placeholder="请选择学校名称"/>
       </el-form-item> -->
-      <el-form-item label="所 在 院 系">
+      <el-form-item prop="college" label="所 在 院 系">
         <el-input v-model="form.college"  placeholder="请输入所在院系"/>
       </el-form-item>
-      <el-form-item label="专 业 名 称">
+      <el-form-item prop="major" label="专 业 名 称">
         <el-input v-model="form.major"  placeholder="请输入专业名称"/>
       </el-form-item>
-      <el-form-item label="年 级">
+      <el-form-item prop="grade" label="年 级">
         <el-select v-model="form.grade" placeholder="选择就读年级">
           <el-option label="大一" value="大一" />
           <el-option label="大二" value="大二" />
           <el-option label="大三" value="大三" />
           <el-option label="大四" value="大四" />
+          <el-option label="研一" value="研一" />
+          <el-option label="研二" value="研二" />
+          <el-option label="研三" value="研三" />
         </el-select>
       </el-form-item>
-      <el-form-item label="入 学 时 间">
+      <el-form-item prop="admission_date" label="入 学 时 间">
         <el-col :span="11">
           <el-date-picker v-model="form.admission_date" type="date" placeholder="选择入学时间" style="width: 100%;" />
         </el-col>
@@ -62,6 +65,17 @@ import { Message } from 'element-ui'
 export default {
   name: 'Certification',
   data () {
+    const validateIdNumber = (rule, value, callback) => {
+      var regIdNumber = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+      if (!value) {
+        callback(new Error('请输入身份证号码'))
+      }
+      if (!regIdNumber.test(value)) {
+        callback(new Error('请输入正确的身份证号码'))
+      } else {
+        callback()
+      }
+    }
     return {
       form: {
         name: '',
@@ -73,6 +87,14 @@ export default {
         grade: '',
         admission_date: '',
         filepath: ''
+      },
+      rules: {
+        name: [{ required: true, trigger: 'blur', message: '请输入真实姓名' }],
+        Id_number: [{ required: true, trigger: 'blur', validator: validateIdNumber }],
+        college: [{ required: true, trigger: 'blur', message: '请输入所在院系' }],
+        major: [{ required: true, trigger: 'blur', message: '请输入专业名称' }],
+        grade: [{ required: true, trigger: 'blur', message: '请选择年级' }],
+        admission_date: [{ required: true, trigger: 'blur', message: '请选择入学时间' }]
       }
       //   imageUrl: '',
       //  file: {},

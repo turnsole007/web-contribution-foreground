@@ -1,5 +1,8 @@
 import axios from 'axios'
 import router from '../../router'
+
+axios.defaults.timeout = 5000
+
 // http request 请求拦截器，有token值则配置上token值
 axios.interceptors.request.use(
   config => {
@@ -23,10 +26,18 @@ axios.interceptors.response.use(
         case 401:
           localStorage.removeItem('token')
           router.replace({
-            path: '/login',
+            path: '/error/401',
+            query: {redirect: router.currentRoute.fullPath}
+          })
+          break
+        case 404:
+          // localStorage.removeItem('token')
+          router.replace({
+            path: '/error/404',
             query: {redirect: router.currentRoute.fullPath}
           })
       }
     }
+    // window.console.log(JSON.stringify(error))
     return Promise.reject(error.response.data)
   })

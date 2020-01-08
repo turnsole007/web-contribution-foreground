@@ -8,6 +8,8 @@ import PersonalInfo from '@/components/PersonalInfo'
 import Update from '@/components/Update'
 import Certification from '@/components/Certification'
 import Entity from '@/components/Entity'
+import Page401 from '@/components/401'
+import Page404 from '@/components/404'
 Vue.use(Router)
 
 const router = new Router({
@@ -39,10 +41,10 @@ const router = new Router({
     {
       path: '/getranklist',
       name: 'RankList',
-      meta: {
-        requireAuth: true
-        // keepAlive: true
-      },
+      // meta: {
+      //   requireAuth: true
+      //   // keepAlive: true
+      // },
       component: RankList
     },
     {
@@ -57,10 +59,10 @@ const router = new Router({
     {
       path: '/personal',
       name: 'PersonalInfo',
-      meta: {
-        requireAuth: true
-        // keepAlive: true
-      },
+      // meta: {
+      //   requireAuth: true
+      //   // keepAlive: true
+      // },
       component: PersonalInfo
     },
     {
@@ -87,9 +89,20 @@ const router = new Router({
         requireAuth: true
       },
       component: Entity
+    },
+    {
+      path: '/error/401',
+      name: '401',
+      component: Page401
+    },
+    {
+      path: '/error/404',
+      name: '404',
+      component: Page404
     }
   ]
 })
+// 路由拦截
 router.beforeEach((to, from, next) => {
   if (to.matched.some(res => res.meta.requireAuth)) {
     if (localStorage.getItem('token')) {

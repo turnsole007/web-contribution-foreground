@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="entity-container">
-      <el-form ref="form" :model="form" label-width="100px">
+      <el-form ref="entity" :model="entity" label-width="100px">
         <div style="margin:30px;font-size:20px;">实名信息</div>
         <el-form-item label="真 实 姓 名">
           <div class="entity-item"> {{entity.username}} </div>

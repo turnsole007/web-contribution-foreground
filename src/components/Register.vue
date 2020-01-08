@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="showRegister" title="Register Form" @close="closeRegisterDialog" center>
+  <el-dialog :visible="showRegister" title="Register Form" @close="closeRegisterDialog" center>
     <div class="register-container">
       <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form" auto-complete="on" label-position="left">
 

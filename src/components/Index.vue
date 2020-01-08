@@ -112,7 +112,7 @@ export default {
     getEvents: function () {
       axios.get('/api/event')
         .then(Response => {
-          window.console.log(Response)
+          // window.console.log(Response)
           if (Response.data.indexOf('errors') === -1) {
             this.events = JSON.parse(Response.data)
           } else {

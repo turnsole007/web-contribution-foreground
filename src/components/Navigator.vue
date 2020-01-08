@@ -20,25 +20,27 @@
         <el-menu-item @click="logout">登出</el-menu-item>
       </el-submenu> -->
       <div class="right-menu" v-if="islogin">
-      <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img src="../assets/picture/img.gif" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="update">
-            <el-dropdown-item>
-              信息修改
+        <el-dropdown class="avatar-container" trigger="click">
+          <div class="avatar-wrapper">
+            <img src="../assets/picture/img.gif" class="user-avatar">
+            <i class="el-icon-caret-bottom" />
+          </div>
+          <el-dropdown-menu slot="dropdown" class="user-dropdown">
+            <router-link to="update">
+              <el-dropdown-item>
+                信息修改
+              </el-dropdown-item>
+            </router-link>
+            <el-dropdown-item divided>
+              <span style="display:block;" @click="logout">Log Out</span>
             </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">Log Out</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div>
-      <el-button v-if="!islogin" type="text" class="right-nav-button" @click="showLoginDialog">登录</el-button>
-      <el-button v-if="!islogin" type="text" class="right-nav-button" @click="showRegiterDialog">注册</el-button>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <div v-else>
+        <el-button type="text" class="right-nav-button" @click="showLoginDialog">登录</el-button>
+        <el-button type="text" class="right-nav-button" @click="showRegiterDialog">注册</el-button>
+      </div>
     </el-menu>
 
     <!-- Login -->
@@ -69,6 +71,11 @@ export default {
 
       loginDialogVisible: false,
       registerDialogVisible: false
+    }
+  },
+  mounted () {
+    if (localStorage.getItem('token')) {
+      this.islogin = true
     }
   },
   methods: {
