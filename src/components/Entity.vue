@@ -4,7 +4,7 @@
       <el-form ref="entity" :model="entity" label-width="100px">
         <div style="margin:30px;font-size:20px;">实名信息</div>
         <el-form-item label="真 实 姓 名">
-          <div class="entity-item"> {{entity.username}} </div>
+          <div class="entity-item"> {{entity.realname}} </div>
         </el-form-item>
         <el-form-item label="github ID" >
             <div class="entity-item"> {{user.github_id}}</div>
@@ -16,7 +16,7 @@
             <el-input v-model="form.school_address" placeholder="请选择学校所在地"/>
         </el-form-item> -->
         <el-form-item label="学 校 名 称" >
-            <div class="entity-item"> {{user.school}}</div>
+            <div class="entity-item"> {{entity.school}}</div>
         </el-form-item>
         <el-form-item label="所 在 院 系">
           <div class="entity-item"> {{entity.college}}</div>

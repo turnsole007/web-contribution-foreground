@@ -64,17 +64,33 @@
     <div class="item-container">
       <div class="item-title">about us</div>
       <div class="line_fenge"></div>
-      <div class="card-container">
-        <el-row type="flex" justify="space-around">
-          <el-col :span="6" v-for="o in 3" :key="o">
-            <el-card :body-style="{ padding: '0px' }">
-              <div style="padding: 16px;">
-                <li>愿景：为您展示可靠的开源项目贡献度</li>
-                <li>价值观：多元化、创造力、公平性</li>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
+      <div class="info-container">
+        <div class="info_who">
+          <div class="info_title">WHO</div>
+          <div class="info">
+            <div class="info">我们是</div>
+            <h4>中科院计算所前瞻实验室分布式组</h4>
+            <p>欢迎大家对我们的网站提出建议≖‿≖✧</p>
+            <p>邮箱：</p>
+          </div>
+        </div>
+        <div class="info_what">
+          <div class="info_title">WHAT</div>
+          <div class="info">开源项目贡献度
+            <li>1.面向高校老师和学生</li>
+            <li>2.基于Github的参与度进行评分</li>
+            <li>3.对Github上的行为进行统计分析</li>
+            <li>4.生成周参与度报告</li>
+          </div>
+        </div>
+        <div class="info_why">
+          <div class="info_title">WHY</div>
+          <div class="info">为什么我们想做这个网站？
+            <li>首先开源项目含金量愈来愈高，而且开源项目可以为高校学生理解和掌握知识提供实战参考。</li>
+            <li>Github作为最大的开源项目聚集地，开源项目的数目多、质量高。</li>
+            <li>希望通过这个网站，使老师对学生的开源代码方面有更加直观的了解，进而对学生的能力有更全面的评估。</li>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -205,5 +221,63 @@ export default {
 .el-carousel__item:nth-child(2n+1) {
   background-color: rgb(165, 49, 49);
 } */
+.info-container {
+  margin: 2% 4%;
+  text-align: center;
+  position: relative;
+  height: 300px;
+
+  .info_who {
+    width: 30%;
+    height: 300px;
+    // position + margin-left 实现同行布局且缩放时不会换行
+    position: absolute;
+    padding: 10px;
+    background: url("../assets/picture/bg1.png") no-repeat scroll 100% 100%;
+    background-size: auto;
+    background-size: cover;
+  }
+
+  .info_what {
+    width: 30%;
+    height: 300px;
+    margin-left: 34.5%;
+    padding: 10px;
+    background: url("../assets/picture/bg2.png") no-repeat scroll 100% 100%;
+    background-size: auto;
+    background-size: cover;
+    position: absolute;
+  }
+  .info_why {
+    width: 30%;
+    height: 300px;
+    margin-left: 70%;
+    padding: 10px;
+    background: url("../assets/picture/bg3.png") no-repeat scroll 100% 100%;
+    background-size: auto;
+    background-size: cover;
+    position: absolute;
+  }
+  .info_title {
+    padding-top: 10px;
+    font-size: 22px;
+    color: #fff;
+    text-shadow: 2px 2px 2px black;
+  }
+  .info {
+    text-align: left;
+    padding-left: 20px;
+    padding-top:20px;
+
+    p {
+      font-size: 14px;
+    }
+
+    li {
+      padding: 5px 20px 0px 0px;
+      font-size: 15px;
+    }
+  }
+}
 
 </style>

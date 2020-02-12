@@ -5,7 +5,7 @@
       <router-view />
       <Footer></Footer>
     </div>
-    <router-view v-if="!$route.meta.keepAlive"></router-view> -->
+    <router-view v-else></router-view> -->
     <Navigator></Navigator>
     <router-view />
     <Footer></Footer>

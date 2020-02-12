@@ -13,7 +13,7 @@
           <div class="info_top_text">
             <div class="text">name：{{user.username}}</div>
             <div class="text">githubId：{{user.github_id}}</div>
-            <div class="text">school：{{user.school}}</div>
+            <!-- <div class="text">school：{{user.school}}</div> -->
             <div class="text">email：{{user.email}}</div>
             <div v-if="user.valid">
               <span class="entity_tip">已实名</span>
@@ -94,21 +94,21 @@
     <!-- <div class="piechart-container">
       <pieChart height="100%" width="100%"/>
     </div> -->
-    <!-- 个人成绩变化图 -->
+    <!-- 每周得分图 -->
     <div class="mixchart-container">
-      <chart height="100%" width="100%"/>
+      <weekScoreChart height="100%" width="100%"/>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import chart from '@/components/MIxChart'
+import weekScoreChart from '@/components/WeekScoreChart'
 import pieChart from '@/components/pieChart'
 
 export default {
   name: 'PersonalInfo',
-  components: { chart, pieChart },
+  components: { weekScoreChart, pieChart },
   data () {
     return {
       info: {
@@ -340,8 +340,9 @@ a:hover {
 }
 
 .mixchart-container {
+  display: inline-block;
   margin: 20px 0 0 6%;
   width: 88%;
-  height:calc(100vh - 84px);
+  height:calc(120vh - 84px);
 }
 </style>

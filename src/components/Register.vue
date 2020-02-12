@@ -48,7 +48,7 @@
           />
         </el-form-item>
 
-        <el-form-item prop="school">
+        <!-- <el-form-item prop="school">
           <span class="svg-container">
             <svg-icon icon-class="school" />
           </span>
@@ -61,6 +61,34 @@
             tabindex="1"
             auto-complete="on"
           />
+        </el-form-item> -->
+
+        <el-form-item prop="phonenumber">
+          <span class="svg-container">
+            <svg-icon icon-class="school" />
+          </span>
+          <el-input
+            ref="phonenumber"
+            v-model="registerForm.phonenumber"
+            placeholder="PhoneNumber"
+            name="phonenumber"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+
+        <el-form-item prop="code" class="code">
+          <el-input
+            ref="code"
+            v-model="code"
+            placeholder="请输入验证码"
+            name="code"
+            type="text"
+            tabindex="1"
+          />
+          <el-button class="button" @click="sendcode" :disabled="disabled" v-if="disabled===false">发送验证码</el-button>
+          <el-button class="button" @click="sendcode" :disabled="disabled" v-if="disabled===true"> {{ btutxt }} </el-button>
         </el-form-item>
 
         <el-form-item prop="password">
@@ -126,9 +154,19 @@ export default {
         callback()
       }
     }
-    const validateSchool = (rule, value, callback) => {
+    /* const validateSchool = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('Please enter your school'))
+      } else {
+        callback()
+      }
+    } */
+    const validatePhoneNumber = (rule, value, callback) => {
+      var regPhoneNumber = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+      if (value === '') {
+        callback(new Error('Please enter your phone number'))
+      } else if (!regPhoneNumber.test(value)) {
+        callback(new Error('Please enter the correct phone number'))
       } else {
         callback()
       }
@@ -145,19 +183,26 @@ export default {
         username: '',
         github_id: '',
         email: '',
-        school: '',
+        // school: '',
+        phonenumber: '',
         password: '',
         valid: '',
         github_loginid: ''
       },
+      code: '',
+      disabled: false,
+      time: 0,
+      btntxt: '重新发送',
       registerRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         github_id: [{ required: true, trigger: 'blur', validator: validateGithubid }],
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
-        school: [{ required: true, trigger: 'blur', validator: validateSchool }],
+        // school: [{ required: true, trigger: 'blur', validator: validateSchool }],
+        phonenumber: [{ required: true, trigger: 'blur', validator: validatePhoneNumber }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
         valid: [{ required: true, trigger: 'blur' }],
         github_loginid: [{ required: true, trigger: 'blur' }]
+        // code: [{ required: true, trigger: 'blur' }]
       },
       loading: false,
       passwordType: 'password',
@@ -173,6 +218,58 @@ export default {
     }
   },
   methods: {
+    // 手机验证发送验证码
+    sendcode () {
+      var regPhoneNumber = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/
+      if (this.registerForm.phonenumber === '') {
+        this.$message({
+          message: '手机号不能为空',
+          center: true
+        })
+        return
+      }
+      if (!regPhoneNumber.test(this.registerForm.phonenumber)) {
+        this.$message({
+          message: '请输入正确的手机号',
+          center: true
+        })
+      } else {
+        window.console.log(this.registerForm.phonenumber)
+        axios.post('/api/user/sendcode', {phonenumber: this.registerForm.phonenumber})
+          .then((response) => {
+            window.console.log(response)
+            if (response.data === 'send code successfully.') {
+              this.$message({
+                message: '发送成功',
+                type: 'success',
+                center: true
+              })
+              this.time = 60
+              this.disabled = true
+              this.timer()
+            } else {
+              Message({
+                message: '发送失败，请重新发送',
+                type: 'error',
+                duration: 5 * 1000
+              })
+            }
+          }).catch()
+      }
+    },
+    // 60S倒计时
+    timer () {
+      if (this.time > 0) {
+        this.time--
+        this.btntxt = this.time + 's后重新获取'
+        setTimeout(this.timer, 1000)
+      } else {
+        this.time = 0
+        this.btntxt = '获取验证码'
+        this.disabled = false
+      }
+    },
+    // 显示密码
     showPwd () {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -183,18 +280,24 @@ export default {
         this.$refs.password.focus()
       })
     },
+    // 密码加密
     encryptedData (publicKey, data) {
       var encryptor = new JSEncrypt()
       encryptor.setPublicKey(publicKey)
       return encryptor.encrypt(data)
     },
+    // 注册
     handleRegister () {
       var publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCkXeTacyYGFCGBhdgL6oQdK58Aask4i7TugkBYMFH8mv1/2NxBb8ncDb5YKeBk00kd0BUNc48Gi6WW5u52hQ+V3/5FsYB6lIw91P5D7epXT/SXX9ePH4HAQ8btMk6T/ogsn02ZYh+d3bVTQpyp3RQJQ8fM5mhCrz9JpxbpLbaHzQIDAQAB'
       this.registerForm.password = this.encryptedData(publicKey, this.registerForm.password)
       this.$refs.registerForm.validate(valid => {
         if (valid) {
           this.loading = true
-          axios.post('/api/user/register', this.registerForm)
+          // axios.post('/api/user/register', this.registerForm)
+          axios.post('/api/user/register', {
+            user: this.registerForm,
+            code: this.code
+          })
             .then((response) => {
               window.console.log(response)
               if (response.data === 'register successfully ！') {
@@ -221,6 +324,7 @@ export default {
         }
       })
     },
+    // 关闭注册dialog
     closeRegisterDialog () {
       this.$emit('closeRegisterDialog', false)
     }
@@ -236,8 +340,13 @@ $bg:#283443;
 $light_gray:#fff;
 $cursor: #fff;
 
+.el-dialog__header, .el-dialog__body {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
+  .register-container .el-input input {
     color: $cursor;
   }
 }
@@ -289,10 +398,10 @@ $light_gray:#eee;
 
   .register-form {
     position: relative;
-    width: 520px;
+    width: 500px;
     max-width: 100%;
     // padding: 160px 35px 0;
-    padding: 10px 35px 0;
+    padding: 0px 30px 0;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -337,6 +446,24 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+}
+
+.code {
+  .el-input {
+      width: 70%;
+      border-radius: 0px;
+      display: inline-block;
+  }
+  .button {
+      height: 30px;
+      border-radius: 5px;
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      padding: 0px 5px;
+      font-size: 12px;
+      display: inline-block;
   }
 }
 </style>

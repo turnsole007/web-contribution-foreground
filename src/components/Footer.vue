@@ -1,7 +1,8 @@
 <template>
   <div class="footer-container">
-    <p>web-contribution</p>
+    <p>Welcome to web-contribution</p>
     <p>为您展示开源项目贡献度</p>
+    <p>Copyright © 2020 Distributed Group of Foresight Lab in Ict . All rights reserved.</p>
   </div>
 </template>
 
@@ -14,7 +15,7 @@ export default {
 <style scoped>
 .footer-container {
   /* position:fixed; */
-  height: 100px;
+  height: 105px;
   background: #44474b;
   text-align: center;
   color: #fff;
