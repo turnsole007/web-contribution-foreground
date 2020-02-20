@@ -104,11 +104,10 @@
 <script>
 import axios from 'axios'
 import weekScoreChart from '@/components/WeekScoreChart'
-import pieChart from '@/components/pieChart'
 
 export default {
   name: 'PersonalInfo',
-  components: { weekScoreChart, pieChart },
+  components: { weekScoreChart },
   data () {
     return {
       info: {

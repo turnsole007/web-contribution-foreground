@@ -59,9 +59,12 @@ export default {
     chartType (val, oldVal) {
       window.console.log('chartType', val)
       if (val === '周得分图') {
-        this.chart.setOption(this.optionOfWeekChart)
+        // 解决图标切换时数据跳变
+        this.chart.clear()// 先清掉图表，再重绘图表
+        this.chart.setOption(this.optionOfWeekChart, true)// 设置为true可以是图表切换数据时重新渲染
       } else {
-        this.chart.setOption(this.optionOfTotalChart)
+        this.chart.clear()
+        this.chart.setOption(this.optionOfTotalChart, true)
       }
     }
   },
@@ -159,10 +162,11 @@ export default {
         },
         // 图例
         legend: {
-          x: '20',
-          top: '40',
+          x: 'center',
+          top: '14',
           textStyle: {
-            color: '#90979c'
+            color: '#90979c',
+            fontSize: '15'
           },
           data: ['codescore', 'issuescore', 'total']
         },
@@ -345,10 +349,11 @@ export default {
         },
         // 图例
         legend: {
-          x: '20',
-          top: '40',
+          x: 'center',
+          top: '14',
           textStyle: {
-            color: '#90979c'
+            color: '#90979c',
+            fontSize: '15'
           },
           data: ['codescore', 'issuescore', 'total']
         },
@@ -433,20 +438,17 @@ export default {
         }],
         series: [{
           name: 'codescore',
-          type: 'bar',
-          stack: 'total',
-          barMaxWidth: 35,
-          barGap: '10%',
+          type: 'line',
+          symbolSize: 3,
+          symbol: 'circle',
           itemStyle: {
             normal: {
               color: 'rgba(255,144,128,1)',
+              barBorderRadius: 0,
               label: {
                 show: false,
-                textStyle: {
-                  color: '#fff'
-                },
-                position: 'insideTop',
-                formatter  (p) {
+                position: 'top',
+                formatter (p) {
                   return p.value > 0 ? p.value : ''
                 }
               }
@@ -456,8 +458,9 @@ export default {
         },
         {
           name: 'issuescore',
-          type: 'bar',
-          stack: 'total',
+          type: 'line',
+          symbolSize: 3,
+          symbol: 'circle',
           itemStyle: {
             normal: {
               color: 'rgba(0,191,183,1)',
@@ -476,7 +479,7 @@ export default {
         {
           name: 'total',
           type: 'line',
-          stack: 'total',
+          stack: 'total',// 折线图堆叠,后一条折线图的数据等于stack值相同的前一条折线数据+本身数据
           symbolSize: 3,
           symbol: 'circle',
           itemStyle: {

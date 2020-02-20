@@ -87,8 +87,8 @@
             type="text"
             tabindex="1"
           />
-          <el-button class="button" @click="sendcode" :disabled="disabled" v-if="disabled===false">发送验证码</el-button>
-          <el-button class="button" @click="sendcode" :disabled="disabled" v-if="disabled===true"> {{ btutxt }} </el-button>
+          <el-button class="button" @click="sendcode" v-if="disabled===false">获取验证码</el-button>
+          <el-button class="button" @click="sendcode" v-if="disabled===true"> {{ btntxt }} </el-button>
         </el-form-item>
 
         <el-form-item prop="password">
@@ -235,7 +235,8 @@ export default {
         })
       } else {
         window.console.log(this.registerForm.phonenumber)
-        axios.post('/api/user/sendcode', {phonenumber: this.registerForm.phonenumber})
+        var url = '/api/user/sendcode?phonenumber=' + this.registerForm.phonenumber
+        axios.post(url)
           .then((response) => {
             window.console.log(response)
             if (response.data === 'send code successfully.') {
