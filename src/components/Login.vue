@@ -29,7 +29,6 @@
             placeholder="Password"
             name="password"
             tabindex="2"
-            auto-complete="on"
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
@@ -122,11 +121,12 @@ export default {
               window.console.log(response)
               if (response.data === 'login success') {
                 localStorage.token = this.loginForm.username
-                alert('登录成功')
+                // alert('登录成功')
                 this.loading = false
                 // this.$router.push('/index')
                 // this.showLogin = false
                 this.islogin = true
+                this.loginForm.password = '' // 清除密码
                 this.$emit('getIsLogin', this.islogin)
               } else {
                 Message({
@@ -135,9 +135,11 @@ export default {
                   duration: 5 * 1000
                 })
                 this.loading = false
+                this.loginForm.password = '' // 避清除密码
               }
             }).catch(() => {
               this.loading = false
+              this.loginForm.password = '' // 避清除密码
             })
         } else {
           console.log('error submit!!')

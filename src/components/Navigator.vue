@@ -97,7 +97,7 @@ export default {
           .then(Response => {
             window.console.log(Response)
             if (Response.data === 'logout success.') {
-              alert('成功退出!')
+              // alert('成功退出!')
               localStorage.removeItem('token')
               this.$router.push('/index')
               this.islogin = false

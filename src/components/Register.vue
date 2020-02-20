@@ -103,7 +103,6 @@
             placeholder="Password"
             name="password"
             tabindex="2"
-            auto-complete="on"
             @keyup.enter.native="handleRegister"
           />
           <span class="show-pwd" @click="showPwd">
@@ -302,11 +301,11 @@ export default {
             .then((response) => {
               window.console.log(response)
               if (response.data === 'register successfully ！') {
-                // TODO  跳转到首页
-                alert('注册成功')
+                // alert('注册成功')
                 this.loading = false
                 // this.$router.push('/login')
                 // alert('getIsRegister')
+                this.registerForm.password = '' // 避清除密码
                 this.$emit('getIsRegister', true)
               } else {
                 Message({
@@ -315,9 +314,11 @@ export default {
                   duration: 5 * 1000
                 })
                 this.loading = false
+                this.registerForm.password = '' // 避清除密码
               }
             }).catch(() => {
               this.loading = false
+              this.registerForm.password = '' // 避清除密码
             })
         } else {
           console.log('error submit!!')
