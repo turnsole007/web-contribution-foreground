@@ -10,55 +10,27 @@
     <div class="item-container">
       <div class="item-title">news</div>
       <div class="line_fenge"></div>
-      <div class="card-container">
-        <el-row type="flex" justify="space-around">
-          <!-- <el-col :span="6" v-for="o in 3" :key="o">
-            <el-card :body-style="{ padding: '0px'}">
-              <img src="../assets/picture/wenyan-lang.png" class="img">
-              <div style="padding: 14px;">
-                <span>文言文编程语言来了，可是好像比英文更难写了！该语言名为“文言（wenyan-lang）”，这是一门采用文言文输入的编程语言，该语言不包括英文字符，仅包含繁体中文字符，并保留繁体引号「」。</span>
-                <div class="bottom clearfix">
-                  <a href="https://www.oschina.net/news/112175/wenyan-lang?utm_source=wechat&utm_medium=zaobao">详情请戳</a>
-                </div>
-              </div>
-            </el-card>
-          </el-col> -->
-          <el-col :span="8">
-            <el-card class="el-card-news" :body-style="{ padding: '0px'}">
-              <div class="news_title">通知公告</div>
-              <div v-for="(event, index) in events" :key="index">
-                <div class="news">
-                  <!-- {{event}} -->
-                  <!-- <div class="msg_type"> msg_type:{{event.msg_type}} </div> -->
-                  <div class="msg"> {{event.msg}}</div>
-                  <!-- <div class="time"> timestamp:{{event.timestamp}}</div> -->
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="6">
-            <el-card class="el-card-news" :body-style="{ padding: '0px'}">
-              <img src="../assets/picture/wenyan-lang.png" class="img">
-              <div style="padding: 14px;">
-                <span>文言文编程语言来了，可是好像比英文更难写了！该语言名为“文言（wenyan-lang）”，这是一门采用文言文输入的编程语言，该语言不包括英文字符，仅包含繁体中文字符，并保留繁体引号「」。</span>
-                <div class="bottom clearfix">
-                  <a href="https://www.oschina.net/news/112175/wenyan-lang?utm_source=wechat&utm_medium=zaobao" target="_blank">详情请戳</a>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-          <el-col :span="6">
-            <el-card class="el-card-news" :body-style="{ padding: '0px'}">
-              <img src="../assets/picture/wenyan-lang.png" class="img">
-              <div style="padding: 14px;">
-                <span>开源推动者与 Android 专家 Jack Wallen 近日发表了一篇文章，预测了未来的开源局势，他认为 2020 年的开源前途一片光明。他从六个方面进行了总结，包括Deepin Linux 将改变开源格局、等。</span>
-                <div class="bottom clearfix">
-                  <a href="https://www.oschina.net/news/112177/open-source-in-2020-the-future-looks-bright?utm_source=wechat&utm_medium=zaobao" target="_blank">详情请戳</a>
-                </div>
-              </div>
-            </el-card>
-          </el-col>
-        </el-row>
+      <div class="news-container">
+        <div class="inner-news">
+          <div class="news_type">站内资讯</div>
+          <div v-for="(event, index) in events" :key="index">
+            <div class="news">
+              <!-- {{event}} -->
+              <!-- <div class="msg_type"> msg_type:{{event.msg_type}} </div> -->
+              <div class="msg"> {{event.msg}}</div>
+              <!-- <div class="time"> timestamp:{{event.timestamp}}</div> -->
+            </div>
+          </div>
+        </div>
+        <div class="out-news">
+          <div class="news_type">综合资讯</div>
+          <div v-for="(n, index) in news" :key="index">
+            <div class="news">
+              <router-link class="title" :to="{name:'News',params:{id: n.id, title: n.title, context: n.context, ref: n.ref}}">{{n.title}}</router-link>
+              <div class="context"> {{n.context}}</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="item-container">
@@ -109,6 +81,7 @@ export default {
         {url: require('../assets/picture/4.png')}
       ],
       events: {},
+      news: {},
       error: {},
       intervalid: ''
     }
@@ -120,6 +93,7 @@ export default {
   },
   mounted () {
     this.getEvents()
+    this.getNews()
   },
   beforeDestroy () {
     clearInterval(this.intervalid)
@@ -131,6 +105,18 @@ export default {
           // window.console.log(Response)
           if (Response.data.indexOf('errors') === -1) {
             this.events = JSON.parse(Response.data)
+          } else {
+            this.error = JSON.parse(Response.data)
+          }
+        })
+        .catch(error => console.log(error))
+    },
+    getNews: function () {
+      axios.get('api/event/news')
+        .then(Response => {
+          // window.console.log(Response)
+          if (Response.data.indexOf('errors') === -1) {
+            this.news = JSON.parse(Response.data)
           } else {
             this.error = JSON.parse(Response.data)
           }
@@ -164,47 +150,79 @@ export default {
   }
 }
 
-.card-container {
+.news-container {
   /* margin: 25px 10px; */
-  margin: 3% 10px;
+  margin: 1% 4% 2% 4%;
   text-align: left;
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  color: #062647;
 
-  .el-card-news {
-    height: 300px;
-    border: 1px dotted rgb(206, 207, 209);
-  }
-
-  a {
-  float: right;
-  font-size: 14px;
-  }
-
-  a:hover {
-    color: rgb(27, 135, 230);
-  }
-
-  .news_title {
-    font-size: 17px;
-    padding: 5px 5px 5px 10px;
-  }
-
-  .news {
-    margin:0 5px 5px 5px;
-    border: 1px solid #545c64;
-    border-radius: 5px;
+  .news_type {
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
     padding: 5px;
+  }
 
-    // .msg_type {
-    //   font-size: 12px;
-    // }
+  .inner-news {
+    height: 300px;
+    width: 40%;
+    position: absolute;
+    padding: 10px;
 
-    .msg {
-      font-size: 15px;
+    .news {
+      margin-bottom:5px;
+      border: 1px dotted #90959b;
+      border-radius: 5px;
+      padding: 5px;
+
+      // .msg_type {
+      //   font-size: 12px;
+      // }
+
+      .msg {
+        font-size: 15px;
+      }
+
+      .time {
+        font-size: 12px;
+        margin-right: 0px;
+      }
     }
+  }
 
-    .time {
-      font-size: 12px;
-      margin-right: 0px;
+  .out-news {
+    height: 300px;
+    width: 56%;
+    margin-left: 44%;
+    position: absolute;
+    padding: 10px;
+
+    .news {
+      margin-bottom:5px;
+      border: 1px dotted #90959b;
+      border-radius: 5px;
+      padding: 5px;
+
+      .title {
+        font-size: 15px;
+        font-weight: bold;
+      }
+
+      .context {
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;//行数
+        -webkit-box-orient: vertical;
+      }
+
+      a:hover {
+        color: rgb(84, 164, 235);
+      }
     }
   }
 }

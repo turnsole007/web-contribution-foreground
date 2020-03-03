@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { Message } from 'element-ui'
 import Index from '@/components/Index'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
@@ -10,6 +11,7 @@ import Certification from '@/components/Certification'
 import Entity from '@/components/Entity'
 import Page401 from '@/components/401'
 import Page404 from '@/components/404'
+import News from '@/components/News'
 Vue.use(Router)
 
 const router = new Router({
@@ -41,10 +43,10 @@ const router = new Router({
     {
       path: '/getranklist',
       name: 'RankList',
-      // meta: {
-      //   requireAuth: true
-      //   // keepAlive: true
-      // },
+      meta: {
+        requireAuth: true
+        // keepAlive: true
+      },
       component: RankList
     },
     {
@@ -59,10 +61,10 @@ const router = new Router({
     {
       path: '/personal',
       name: 'PersonalInfo',
-      // meta: {
-      //   requireAuth: true
-      //   // keepAlive: true
-      // },
+      meta: {
+        requireAuth: true
+        // keepAlive: true
+      },
       component: PersonalInfo
     },
     {
@@ -99,6 +101,11 @@ const router = new Router({
       path: '/error/404',
       name: '404',
       component: Page404
+    },
+    {
+      path: '/news/:id',
+      name: 'News',
+      component: News
     }
   ]
 })
@@ -108,7 +115,7 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem('token')) {
       next()
     } else {
-      alert('请先登录')
+      Message.warning('请先登录')
       next({
         path: '/index',
         query: {redirect: to.fullPath}
