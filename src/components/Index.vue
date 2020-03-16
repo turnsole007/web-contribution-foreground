@@ -11,23 +11,27 @@
       <div class="item-title">news</div>
       <div class="line_fenge"></div>
       <div class="news-container">
-        <div class="inner-news">
+        <div class="inner-news-area">
           <div class="news_type">站内资讯</div>
-          <div v-for="(event, index) in events" :key="index">
-            <div class="news">
-              <!-- {{event}} -->
-              <!-- <div class="msg_type"> msg_type:{{event.msg_type}} </div> -->
-              <div class="msg"> {{event.msg}}</div>
-              <!-- <div class="time"> timestamp:{{event.timestamp}}</div> -->
+          <div class="inner-news">
+            <div v-for="(event, index) in events" :key="index">
+              <div class="news">
+                <!-- {{event}} -->
+                <!-- <div class="msg_type"> msg_type:{{event.msg_type}} </div> -->
+                <div class="msg"> {{event.msg}}</div>
+                <!-- <div class="time"> timestamp:{{event.timestamp}}</div> -->
+              </div>
             </div>
           </div>
         </div>
-        <div class="out-news">
+        <div class="out-news-area">
           <div class="news_type">综合资讯</div>
-          <div v-for="(n, index) in news" :key="index">
-            <div class="news">
-              <router-link class="title" :to="{name:'News',params:{id: n.id, title: n.title, context: n.context, ref: n.ref}}">{{n.title}}</router-link>
-              <div class="context"> {{n.context}}</div>
+          <div class="out-news">
+            <div v-for="(n, index) in news" :key="index">
+              <div class="news">
+                <router-link class="title" :to="{name:'News',params:{id: n.id, title: n.title, context: n.context, ref: n.ref}}">{{n.title}}</router-link>
+                <div class="context"> {{n.context}}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -156,7 +160,6 @@ export default {
   text-align: left;
   position: relative;
   height: 300px;
-  overflow: hidden;
   color: #062647;
 
   .news_type {
@@ -166,62 +169,70 @@ export default {
     padding: 5px;
   }
 
-  .inner-news {
-    height: 300px;
-    width: 40%;
+  .inner-news-area {
     position: absolute;
-    padding: 10px;
+    width: 40%;
 
-    .news {
-      margin-bottom:5px;
-      border: 1px dotted #90959b;
-      border-radius: 5px;
-      padding: 5px;
+    .inner-news {
+      height: 300px;
+      padding: 10px;
+      overflow-y: scroll;
 
-      // .msg_type {
-      //   font-size: 12px;
-      // }
+      .news {
+        margin-bottom:5px;
+        border: 1px dotted #90959b;
+        border-radius: 5px;
+        padding: 5px;
 
-      .msg {
-        font-size: 15px;
-      }
+        // .msg_type {
+        //   font-size: 12px;
+        // }
 
-      .time {
-        font-size: 12px;
-        margin-right: 0px;
+        .msg {
+          font-size: 15px;
+        }
+
+        .time {
+          font-size: 12px;
+          margin-right: 0px;
+        }
       }
     }
   }
 
-  .out-news {
-    height: 300px;
-    width: 56%;
-    margin-left: 44%;
+  .out-news-area {
     position: absolute;
-    padding: 10px;
+    margin-left: 44%;
+    width: 56%;
 
-    .news {
-      margin-bottom:5px;
-      border: 1px dotted #90959b;
-      border-radius: 5px;
-      padding: 5px;
+    .out-news {
+      height: 300px;
+      padding: 10px;
+      overflow-y: scroll;
 
-      .title {
-        font-size: 15px;
-        font-weight: bold;
-      }
+      .news {
+        margin-bottom:5px;
+        border: 1px dotted #90959b;
+        border-radius: 5px;
+        padding: 5px;
 
-      .context {
-        font-size: 14px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;//行数
-        -webkit-box-orient: vertical;
-      }
+        .title {
+          font-size: 15px;
+          font-weight: bold;
+        }
 
-      a:hover {
-        color: rgb(84, 164, 235);
+        .context {
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;//行数
+          -webkit-box-orient: vertical;
+        }
+
+        a:hover {
+          color: rgb(84, 164, 235);
+        }
       }
     }
   }
