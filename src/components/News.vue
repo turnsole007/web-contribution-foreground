@@ -2,7 +2,8 @@
   <div class="app-container">
     <div class="new-container">
       <div class="title">{{this_new.title}}</div>
-      <div class="ref">装载自  {{this_new.ref}}</div>
+      <div class="ref">转载自 {{this_new.ref}}</div>
+      <div class="time">发布于{{this_new.time}}</div>
       <article class="markdown-body" style="text-align:left" v-html="content"></article>
     </div>
   </div>
@@ -11,6 +12,7 @@
 <script>
 import marked from 'marked'
 import 'github-markdown-css/github-markdown.css'
+import { formatDate } from '@/utils/date.js'
 
 export default {
   name: 'News',
@@ -20,7 +22,8 @@ export default {
         id: '',
         title: '',
         context: '',
-        ref: ''
+        ref: '',
+        time: ''
       },
       content: ''
     }
@@ -35,11 +38,17 @@ export default {
         this.this_new.title = this.$route.params.title
         this.this_new.context = this.$route.params.context
         this.this_new.ref = this.$route.params.ref
+        this.this_new.time = this.getFormatDate(this.$route.params.timestamp)
         // marked将markdown语法渲染成html语法
         this.content = marked(this.this_new.context)
         window.console.log('content')
         window.console.log(this.content)
       }
+    },
+    getFormatDate (timeStamp) {
+      var date = new Date(timeStamp * 1000)
+      // window.console.log(date)
+      return formatDate(date, 'yyyy-MM-dd')
     }
   }
 }
@@ -57,8 +66,15 @@ export default {
   }
 
   .ref {
+    display: inline-block;
     font-size: 14px;
-    text-align: center;
+    margin-left: 40%;
+  }
+
+  .time {
+    display: inline-block;
+    font-size: 14px;
+    margin-left: 5%;
   }
 
   /* .context {

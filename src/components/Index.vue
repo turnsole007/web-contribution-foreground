@@ -29,8 +29,8 @@
           <div class="out-news">
             <div v-for="(n, index) in news" :key="index">
               <div class="news">
-                <router-link class="title" :to="{name:'News',params:{id: n.id, title: n.title, context: n.context, ref: n.ref}}">{{n.title}}</router-link>
-                <div class="context"> {{n.context}}</div>
+                <router-link class="title" :to="{name:'News',params:{id: n.id, title: n.title, context: n.context, ref: n.ref, timestamp: n.timestamp}}">{{n.title}}</router-link>
+                <div class="context"> {{n.introduce}}</div>
               </div>
             </div>
           </div>
