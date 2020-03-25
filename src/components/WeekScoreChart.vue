@@ -1,9 +1,10 @@
 <template>
   <div class="chart-container">
-    <el-select class="chart-select" v-model="chartType" placeholder="请选择图表">
+    <!-- <el-select class="chart-select" v-model="chartType" placeholder="请选择图表">
       <el-option key="得分变化图" value="得分变化图" label="得分变化图"/>
       <el-option key="周得分图" value="周得分图" label="周得分图"/>
-    </el-select>
+    </el-select> -->
+    <el-option key="得分变化图" value="得分变化图" label="得分变化图"/>
     <div :id="id" :class="className" :style="{height:height,width:width}"/>
   </div>
 </template>
@@ -40,13 +41,13 @@ export default {
       weekContrb: {},
       error: {},
       chartType: '',
-      optionOfWeekChart: {},
+      // optionOfWeekChart: {},
       optionOfTotalChart: {}
     }
   },
   mounted () {
     this.getWeekContrb()
-    // this.initChart()
+    this.initChart()
   },
   beforeDestroy () {
     if (!this.chart) {
@@ -55,7 +56,7 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
-  watch: {
+  /* watch: {
     chartType (val, oldVal) {
       window.console.log('chartType', val)
       if (val === '周得分图') {
@@ -67,7 +68,7 @@ export default {
         this.chart.setOption(this.optionOfTotalChart, true)
       }
     }
-  },
+  }, */
   methods: {
     getWeekContrb () {
       var path = '/api/contrbscore/getweekscore'
@@ -96,12 +97,12 @@ export default {
     initOption: function () {
       // 构建数据数组
       this.weekContrb.sort((a, b) => a.commit_timestap - b.commit_timestap)
-      const dataOfWeekChart = {
+      /* const dataOfWeekChart = {
         xData: [],
         arrCodescore: [],
         arrIssuescore: [],
         arrTotalscore: []
-      }
+      } */
       const dataOfTotalChart = {
         xData: [],
         arrCodescore: [],
@@ -109,14 +110,17 @@ export default {
         arrTotalscore: []
       }
       var temp1 = 0
+      // var temp11 = []
       var temp2 = 0
+      // var temp22 = []
       var temp3 = 0
+      // var temp33 = []
       for (let i in this.weekContrb) {
         // 构建周得分图的数据
-        dataOfWeekChart.xData.push(this.getFormatDate(this.weekContrb[i].commit_timestap))
+        /* dataOfWeekChart.xData.push(this.getFormatDate(this.weekContrb[i].commit_timestap))
         dataOfWeekChart.arrCodescore.push(this.weekContrb[i].codescore)
         dataOfWeekChart.arrIssuescore.push(this.weekContrb[i].issuescore)
-        dataOfWeekChart.arrTotalscore.push(this.weekContrb[i].codescore + this.weekContrb[i].issuescore)
+        dataOfWeekChart.arrTotalscore.push(this.weekContrb[i].codescore + this.weekContrb[i].issuescore) */
         // 构造得分图的数据
         dataOfTotalChart.xData.push(this.getFormatDate(this.weekContrb[i].commit_timestap))
         temp1 += this.weekContrb[i].codescore
@@ -125,194 +129,211 @@ export default {
         dataOfTotalChart.arrIssuescore.push(temp2)
         temp3 += this.weekContrb[i].codescore + this.weekContrb[i].issuescore
         dataOfTotalChart.arrTotalscore.push(temp3)
+        // 构造二维数组
+        // var date = new Date(this.weekContrb[i].commit_timestap * 1000)
+        // temp1 += this.weekContrb[i].codescore
+        // temp11 = []
+        // temp11.push(date)
+        // temp11.push(temp1)
+        // dataOfTotalChart.arrCodescore.push(temp11)
+        // temp2 += this.weekContrb[i].issuescore
+        // temp22 = []
+        // temp22.push(date)
+        // temp22.push(temp2)
+        // dataOfTotalChart.arrIssuescore.push(temp22)
+        // temp3 += this.weekContrb[i].codescore + this.weekContrb[i].issuescore
+        // temp33 = []
+        // temp33.push(date)
+        // temp33.push(temp3)
+        // dataOfTotalChart.arrTotalscore.push(temp33)
       }
-      this.optionOfWeekChart = {
-        backgroundColor: '#344b58',
-        title: {
-          text: '周得分图',
-          x: '20',
-          top: '10',
-          textStyle: {
-            color: '#fff',
-            fontSize: '22'
-          },
-          subtextStyle: {
-            color: '#90979c',
-            fontSize: '16'
-          }
-        },
-        // 图的类型
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            textStyle: {
-              color: '#fff'
-            }
-          }
-        },
-        grid: {
-          left: '6%',
-          right: '5%',
-          borderWidth: 0,
-          top: 80,
-          bottom: 95,
-          textStyle: {
-            color: '#fff'
-          }
-        },
-        // 图例
-        legend: {
-          x: 'center',
-          top: '14',
-          textStyle: {
-            color: '#90979c',
-            fontSize: '15'
-          },
-          data: ['codescore', 'issuescore', 'total']
-        },
-        calculable: true,
-        // x坐标轴
-        xAxis: [{
-          type: 'category',
-          axisLine: {
-            lineStyle: {
-              color: '#90979c'
-            }
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          splitArea: {
-            show: false
-          },
-          axisLabel: {
-            interval: 0,
-            // 每隔4个显示一个label,解决x轴过密导致显示不全
-            formatter: function (params, index) {
-              if (index % 4 === 0) {
-                return params
-              } else {
-                return ''
-              }
-            }
-          },
-          data: dataOfWeekChart.xData
-        }],
-        yAxis: [{
-          type: 'value',
-          splitLine: {
-            show: false
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#90979c'
-            }
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            interval: 0
-          },
-          splitArea: {
-            show: false
-          }
-        }],
-        // 图表缩放
-        dataZoom: [{
-          show: true,
-          height: 25,
-          xAxisIndex: [
-            0
-          ],
-          bottom: 30,
-          start: 30,
-          end: 90,
-          handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-          handleSize: '110%',
-          handleStyle: {
-            color: '#d3dee5'
+      // this.optionOfWeekChart = {
+      //   backgroundColor: '#344b58',
+      //   title: {
+      //     text: '周得分图',
+      //     x: '20',
+      //     top: '10',
+      //     textStyle: {
+      //       color: '#fff',
+      //       fontSize: '22'
+      //     },
+      //     subtextStyle: {
+      //       color: '#90979c',
+      //       fontSize: '16'
+      //     }
+      //   },
+      //   // 图的类型
+      //   tooltip: {
+      //     trigger: 'axis',
+      //     axisPointer: {
+      //       textStyle: {
+      //         color: '#fff'
+      //       }
+      //     }
+      //   },
+      //   grid: {
+      //     left: '6%',
+      //     right: '5%',
+      //     borderWidth: 0,
+      //     top: 80,
+      //     bottom: 95,
+      //     textStyle: {
+      //       color: '#fff'
+      //     }
+      //   },
+      //   // 图例
+      //   legend: {
+      //     x: 'center',
+      //     top: '14',
+      //     textStyle: {
+      //       color: '#90979c',
+      //       fontSize: '15'
+      //     },
+      //     data: ['codescore', 'issuescore', 'total']
+      //   },
+      //   calculable: true,
+      //   // x坐标轴
+      //   xAxis: [{
+      //     type: 'category',
+      //     axisLine: {
+      //       lineStyle: {
+      //         color: '#90979c'
+      //       }
+      //     },
+      //     splitLine: {
+      //       show: false
+      //     },
+      //     axisTick: {
+      //       show: false
+      //     },
+      //     splitArea: {
+      //       show: false
+      //     },
+      //     axisLabel: {
+      //       interval: 'auto'
+      //       // 每隔4个显示一个label,解决x轴过密导致显示不全
+      //       /* formatter: function (params, index) {
+      //         if (index % 4 === 0) {
+      //           return params
+      //         } else {
+      //           return ''
+      //         }
+      //       } */
+      //     },
+      //     data: dataOfWeekChart.xData
+      //   }],
+      //   yAxis: [{
+      //     type: 'value',
+      //     splitLine: {
+      //       show: false
+      //     },
+      //     axisLine: {
+      //       lineStyle: {
+      //         color: '#90979c'
+      //       }
+      //     },
+      //     axisTick: {
+      //       show: false
+      //     },
+      //     axisLabel: {
+      //       interval: 0
+      //     },
+      //     splitArea: {
+      //       show: false
+      //     }
+      //   }],
+      //   // 图表缩放
+      //   dataZoom: [{
+      //     show: true,
+      //     height: 25,
+      //     xAxisIndex: [
+      //       0
+      //     ],
+      //     bottom: 30,
+      //     start: 30,
+      //     end: 90,
+      //     handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+      //     handleSize: '110%',
+      //     handleStyle: {
+      //       color: '#d3dee5'
 
-          },
-          textStyle: {
-            color: '#fff' },
-          borderColor: '#90979c'
+      //     },
+      //     textStyle: {
+      //       color: '#fff' },
+      //     borderColor: '#90979c'
 
-        }, {
-          type: 'inside',
-          show: true,
-          height: 15,
-          start: 1,
-          end: 35
-        }],
-        series: [{
-          name: 'codescore',
-          type: 'bar',
-          stack: 'total',
-          barMaxWidth: 35,
-          barGap: '10%',
-          itemStyle: {
-            normal: {
-              color: 'rgba(255,144,128,1)',
-              label: {
-                show: true,
-                textStyle: {
-                  color: '#fff'
-                },
-                position: 'insideTop',
-                formatter  (p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: dataOfWeekChart.arrCodescore
-        },
-        {
-          name: 'issuescore',
-          type: 'bar',
-          stack: 'total',
-          itemStyle: {
-            normal: {
-              color: 'rgba(0,191,183,1)',
-              barBorderRadius: 0,
-              label: {
-                show: true,
-                position: 'top',
-                formatter (p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: dataOfWeekChart.arrIssuescore
-        },
-        {
-          name: 'total',
-          type: 'line',
-          stack: 'total',
-          symbolSize: 3,
-          symbol: 'circle',
-          itemStyle: {
-            normal: {
-              color: 'rgba(252,230,48,1)',
-              barBorderRadius: 0,
-              label: {
-                show: true,
-                position: 'top',
-                formatter (p) {
-                  return p.value > 0 ? p.value : ''
-                }
-              }
-            }
-          },
-          data: dataOfWeekChart.arrTotalscore
-        }
-        ]
-      }
+      //   }, {
+      //     type: 'inside',
+      //     show: true,
+      //     height: 15,
+      //     start: 1,
+      //     end: 35
+      //   }],
+      //   series: [{
+      //     name: 'codescore',
+      //     type: 'bar',
+      //     stack: 'total',
+      //     barMaxWidth: 35,
+      //     barGap: '10%',
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'rgba(255,144,128,1)',
+      //         label: {
+      //           show: true,
+      //           textStyle: {
+      //             color: '#fff'
+      //           },
+      //           position: 'insideTop',
+      //           formatter  (p) {
+      //             return p.value > 0 ? p.value : ''
+      //           }
+      //         }
+      //       }
+      //     },
+      //     data: dataOfWeekChart.arrCodescore
+      //   },
+      //   {
+      //     name: 'issuescore',
+      //     type: 'bar',
+      //     stack: 'total',
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'rgba(0,191,183,1)',
+      //         barBorderRadius: 0,
+      //         label: {
+      //           show: true,
+      //           position: 'top',
+      //           formatter (p) {
+      //             return p.value > 0 ? p.value : ''
+      //           }
+      //         }
+      //       }
+      //     },
+      //     data: dataOfWeekChart.arrIssuescore
+      //   },
+      //   {
+      //     name: 'total',
+      //     type: 'line',
+      //     stack: 'total',
+      //     symbolSize: 3,
+      //     symbol: 'circle',
+      //     itemStyle: {
+      //       normal: {
+      //         color: 'rgba(252,230,48,1)',
+      //         barBorderRadius: 0,
+      //         label: {
+      //           show: true,
+      //           position: 'top',
+      //           formatter (p) {
+      //             return p.value > 0 ? p.value : ''
+      //           }
+      //         }
+      //       }
+      //     },
+      //     data: dataOfWeekChart.arrTotalscore
+      //   }
+      //   ]
+      // }
       this.optionOfTotalChart = {
         backgroundColor: '#344b58',
         title: {
@@ -361,6 +382,9 @@ export default {
         // x坐标轴
         xAxis: [{
           type: 'category',
+          // type: 'time',
+          // min: new Date('2019/01/01'),
+          // max: new Date('2019/12/31'),
           axisLine: {
             lineStyle: {
               color: '#90979c'
@@ -377,15 +401,15 @@ export default {
           },
           // 坐标轴刻度标签的相关设置
           axisLabel: {
-            interval: 0,
+            interval: 'auto'
             // 每隔5个显示一个label
-            formatter: function (params, index) {
+            /* formatter: function (params, index) {
               if (index % 4 === 0) {
                 return params
               } else {
                 return ''
               }
-            }
+            } */
           },
           data: dataOfTotalChart.xData
         }],
@@ -417,7 +441,7 @@ export default {
             0
           ],
           bottom: 30,
-          start: 0,
+          start: 90,
           end: 100,
           handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
           handleSize: '110%',
@@ -480,6 +504,7 @@ export default {
           name: 'total',
           type: 'line',
           stack: 'total', // 折线图堆叠,后一条折线图的数据等于stack值相同的前一条折线数据+本身数据
+          // smooth: true,
           symbolSize: 3,
           symbol: 'circle',
           itemStyle: {
@@ -512,6 +537,7 @@ export default {
 <style scoped>
 .chart-container {
   height: 500px;
+  margin-top: 40px;
 }
 .chart-select {
   margin: 20px;
