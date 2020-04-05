@@ -28,7 +28,7 @@
           <div class="entity-item"> {{entity.grade}}</div>
         </el-form-item>
         <el-form-item label="入 学 时 间">
-          <div class="entity-item"> {{entity.admission_date}}</div>
+          <div class="entity-item"> {{entity.admission_date.substring(0,10)}}</div>
         </el-form-item>
       </el-form>
     </div>

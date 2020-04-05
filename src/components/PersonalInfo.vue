@@ -5,7 +5,8 @@
     <div> {{ info }} </div>
     <div style="color:red;"> {{ info.contrbdetail }} </div>
     <div style="color:blue;"> {{ info.contrbdetail[0] }} </div>
-    <div style="color:green;"> {{ info.contrbdetail[0].GithubId }} </div> -->
+    <div style="color:green;"> {{ info.contrbdetail[0].GithubId }}</div>
+    <div>{{lastWeek }}</div> -->
     <el-row  type="flex" justify="space-around">
       <!-- 基本信息 -->
       <el-col :span="8">
@@ -90,6 +91,21 @@
       </el-col>
     </el-row>
 
+    <div class="week-summary-container">
+      <div class="title">本 周 得 分</div>
+      <div class="tip"> {{ getFormatDate(lastWeek.commit_timestap) }} (Mon.) - {{ getFormatSundayDate(lastWeek.commit_timestap) }} (Sun.) 的得分情况</div>
+      <div class="score-container">
+        <div class="score"> codescore : {{ lastWeek.codescore}}</div>
+        <div class="score"> issuescore : {{ lastWeek.issuescore}}</div>
+      </div>
+      <div class="detials-container">
+        <div class="detials"> commit_num : {{ lastWeek.commit_num }} 次</div>
+        <div class="detials"> issue_num : {{ lastWeek.issue_num }} 次</div>
+        <div class="detials"> changed_files : {{ lastWeek.changed_files }} 个</div>
+        <div class="detials"> add_code_lines : {{ lastWeek.add_code_line }} 行</div>
+        <div class="detials"> del_code_lines : {{ lastWeek.del_code_line }} 行</div>
+      </div>
+    </div>
     <!-- 饼图 -->
     <!-- <div class="piechart-container">
       <pieChart height="100%" width="100%"/>
@@ -104,6 +120,7 @@
 <script>
 import axios from 'axios'
 import weekScoreChart from '@/components/WeekScoreChart'
+import { formatDate } from '@/utils/date.js'
 
 export default {
   name: 'PersonalInfo',
@@ -116,6 +133,7 @@ export default {
       },
       user: {},
       error: {},
+      lastWeek: {},
       // pieChart: null
       codeRepoDetail: false,
       issueRepoDetail: false,
@@ -126,6 +144,7 @@ export default {
   mounted () {
     this.getUserContrbScore()
     this.getUserInfo()
+    this.getLastWeek()
   },
   // beforeDestroy () {
   //   if (!this.pieChart) {
@@ -185,6 +204,32 @@ export default {
         }
       }
       return issueRepo
+    },
+    getLastWeek: function () {
+      let path = '/api/contrbscore/getlastweek'
+      if (JSON.stringify(this.$route.params).search('username') !== -1) {
+        path = path + '?username=' + this.$route.params.username
+      }
+      axios.get(path)
+        .then(Response => {
+          window.console.log(Response)
+          if (Response.status === 200) {
+            this.lastWeek = JSON.parse(Response.data)
+          } else {
+            this.error = Response.error
+          }
+        })
+        .catch(error => console.log(error))
+    },
+    getFormatDate (timeStamp) {
+      var date = new Date(timeStamp * 1000)
+      // window.console.log(date)
+      return formatDate(date, 'yyyy.MM.dd')
+    },
+    getFormatSundayDate (timeStamp) {
+      var date = new Date((timeStamp + 6 * 24 * 3600) * 1000)
+      // window.console.log(date)
+      return formatDate(date, 'yyyy.MM.dd')
     }
   }
 }
@@ -331,17 +376,70 @@ a:hover {
   color: rgb(27, 135, 230);
 }
 
-.piechart-container {
-  display: inline-block;
-  margin: 20px 0 0 8%;
-  width: 46%;
-  height:calc(100vh - 50px);
-}
+// .piechart-container {
+//   display: inline-block;
+//   margin: 20px 0 0 8%;
+//   width: 46%;
+//   height:calc(100vh - 50px);
+// }
 
 .mixchart-container {
   display: inline-block;
   margin: 20px 0 0 6%;
   width: 88%;
   height:calc(120vh - 84px);
+}
+
+.week-summary-container {
+  width: 88%;
+  margin: 50px 0 0 6%;
+  background: #466475;
+  border-radius: 8px;
+  color: white;
+  padding: 10px;
+
+  .tip {
+    margin: 5px;
+    margin-left: 2%;
+    color: #cfcdcd;
+  }
+
+  .title {
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 5px 5px 5px black, 0px 0px 2px black;
+    margin-left: 2%;
+    margin-top: 5px;
+  }
+
+  .score-container {
+    display: inline-block;
+    vertical-align: middle;
+    width: 45%;
+    margin-left: 5%;
+
+    .score {
+      font-size: 20px;
+      padding: 3px 0px;
+    }
+
+  }
+
+  .detials-container {
+    display: inline-block;
+    vertical-align: middle;
+    width: 45%;
+
+    .detials {
+      font-size: 17px;
+      padding: 1px 0px;
+    }
+  }
+
+  // .calendar-chart {
+  //   display: inline-block;
+  //   width: 69%;
+  //   background: #B68814;
+  // }
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-      <div style="margin:30px;font-size:20px;">填写学生信息</div>
+      <div class="title">填写学生信息</div>
+      <div class="alarm">注意：一经填写，不得修改，请如实填写！</div>
       <el-form-item prop="realname" label="真 实 姓 名">
         <el-input v-model="form.realname" placeholder="请输入真实姓名"/>
       </el-form-item>
@@ -127,10 +128,6 @@ export default {
   },
   methods: {
     onSubmit () {
-      // this.$message('submit!')
-      //   this.$ref.upload.submit()
-      //   this.param.append('name', this.form.name)
-      //   this.param.append('school', this.form.school)
       this.form.username = localStorage.getItem('token')
       axios.post('/api/entity', this.form)
         .then((response) => {
@@ -186,7 +183,17 @@ export default {
   width: 60%;
 }
 
-.avatar-uploader .el-upload {
+.title {
+  margin:30px 30px 0px 30px;
+  font-size:20px;
+}
+
+.alarm {
+  font-size: 15px;
+  color: rgb(214, 13, 13);
+  margin: 5px 0px 30px 30px;
+}
+/* .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
@@ -208,5 +215,5 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
-}
+} */
 </style>

@@ -53,10 +53,10 @@
         <div class="info_what">
           <div class="info_title">WHAT</div>
           <div class="info">开源项目贡献度
-            <li>1.面向高校老师和学生</li>
-            <li>2.基于Github的参与度进行评分</li>
-            <li>3.对Github上的行为进行统计分析</li>
-            <li>4.生成周参与度报告</li>
+            <li>面向高校老师和学生</li>
+            <li>基于Github的参与度进行评分</li>
+            <li>对Github上的行为进行统计分析</li>
+            <li>生成周参与度报告</li>
           </div>
         </div>
         <div class="info_why">
@@ -159,7 +159,7 @@ export default {
   margin: 1% 4% 2% 4%;
   text-align: left;
   position: relative;
-  height: 300px;
+  height: 330px;
   color: #062647;
 
   .news_type {
@@ -177,10 +177,14 @@ export default {
       height: 300px;
       padding: 10px;
       overflow-y: scroll;
+      background: #e0e8f1;
+      border-radius: 5px;
+      border: 1px solid #e0e8f1;
 
       .news {
         margin-bottom:5px;
         border: 1px dotted #90959b;
+        background: white;
         border-radius: 5px;
         padding: 5px;
 
@@ -209,11 +213,15 @@ export default {
       height: 300px;
       padding: 10px;
       overflow-y: scroll;
+      background: #e0e8f1;
+      border-radius: 5px;
+      border: 1px solid #e0e8f1;
 
       .news {
         margin-bottom:5px;
         border: 1px dotted #90959b;
         border-radius: 5px;
+        background: white;
         padding: 5px;
 
         .title {

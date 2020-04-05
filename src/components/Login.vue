@@ -132,7 +132,7 @@ export default {
                 Message({
                   message: response.data,
                   type: 'error',
-                  duration: 5 * 1000
+                  duration: 2 * 1000
                 })
                 this.loading = false
                 this.loginForm.password = '' // 避清除密码

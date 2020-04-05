@@ -337,7 +337,7 @@ export default {
       this.optionOfTotalChart = {
         backgroundColor: '#344b58',
         title: {
-          text: '得分变化图',
+          text: '得 分 变 化 图',
           x: '20',
           top: '10',
           textStyle: {
