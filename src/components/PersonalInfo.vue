@@ -32,7 +32,7 @@
         <div class="info_top_2">
           <div class="info_top_text">
             <p class="title">codescore</p>
-            <p class="score" type="text">{{ info.score.codescore }}</p>
+            <p class="score" type="text">{{ Math.round(info.score.codescore) }}</p>
             <el-button type="text" class="info_button" @click="codeRepoDetail=!codeRepoDetail">相关仓库细节</el-button>
           </div>
           <img src="../assets/picture/web_developer.png" class="info_img">
@@ -63,7 +63,7 @@
         <div class="info_top_2">
           <div class="info_top_text">
             <p class="title">issuescore</p>
-            <p class="score">{{info.score.issuescore}}</p>
+            <p class="score"> {{ Math.round(info.score.issuescore) }}</p>
             <el-button type="text" class="info_button" @click="issueRepoDetail=!issueRepoDetail">相关仓库细节</el-button>
           </div>
           <img src="../assets/picture/presentation_and_discussion.png" class="info_img">
@@ -95,8 +95,8 @@
       <div class="title">本 周 得 分</div>
       <div class="tip"> {{ getFormatDate(lastWeek.commit_timestap) }} (Mon.) - {{ getFormatSundayDate(lastWeek.commit_timestap) }} (Sun.) 的得分情况</div>
       <div class="score-container">
-        <div class="score"> codescore : {{ lastWeek.codescore}}</div>
-        <div class="score"> issuescore : {{ lastWeek.issuescore}}</div>
+        <div class="score"> codescore : {{ Math.round(lastWeek.codescore) }}</div>
+        <div class="score"> issuescore : {{ Math.round(lastWeek.issuescore) }}</div>
       </div>
       <div class="detials-container">
         <div class="detials"> commit_num : {{ lastWeek.commit_num }} 次</div>

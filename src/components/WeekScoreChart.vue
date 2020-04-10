@@ -123,11 +123,11 @@ export default {
         dataOfWeekChart.arrTotalscore.push(this.weekContrb[i].codescore + this.weekContrb[i].issuescore) */
         // 构造得分图的数据
         dataOfTotalChart.xData.push(this.getFormatDate(this.weekContrb[i].commit_timestap))
-        temp1 += this.weekContrb[i].codescore
+        temp1 += Math.round(this.weekContrb[i].codescore)
         dataOfTotalChart.arrCodescore.push(temp1)
-        temp2 += this.weekContrb[i].issuescore
+        temp2 += Math.round(this.weekContrb[i].issuescore)
         dataOfTotalChart.arrIssuescore.push(temp2)
-        temp3 += this.weekContrb[i].codescore + this.weekContrb[i].issuescore
+        temp3 += Math.round(this.weekContrb[i].codescore + this.weekContrb[i].issuescore)
         dataOfTotalChart.arrTotalscore.push(temp3)
         // 构造二维数组
         // var date = new Date(this.weekContrb[i].commit_timestap * 1000)
@@ -356,7 +356,21 @@ export default {
             textStyle: {
               color: '#fff'
             }
-          }
+          }/* ,
+          formatter: function (value) {
+            // 这里的value[0].value就是我需要每次显示在图上的数据
+            if (value[2].value <= 0) {
+              value[2].value = '0'
+            } else {
+              var k = 1000
+              var sizes = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
+              // 这里是取自然对数，也就是log（k）（value[0].value），求出以k为底的多少次方是value[0].value
+              var c = Math.floor(Math.log(value[2].value) / Math.log(k))
+              value[2].value = (value[2].value / Math.pow(k, c)).toPrecision(3) + ' ' + sizes[c]
+            }
+            // 这里的value[0].name就是每次显示的name
+            return value[2].name + value[2].value
+          } */
         },
         grid: {
           left: '6%',
@@ -427,7 +441,18 @@ export default {
             show: false
           },
           axisLabel: {
-            interval: 0
+            // interval: 0
+            formatter: function (value) {
+              var txt = []
+              if (value >= 1000 && value <= 10000) {
+                txt.push(value / 1000 + 'k')
+              } else if (value >= 10000) {
+                txt.push(value / 10000 + 'w')
+              } else {
+                txt.push(value)
+              }
+              return txt
+            }
           },
           splitArea: {
             show: false
