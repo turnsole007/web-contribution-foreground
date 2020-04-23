@@ -120,8 +120,7 @@ export default {
             .then((response) => {
               window.console.log(response)
               if (response.data === 'login success') {
-                localStorage.token = this.loginForm.username
-                // alert('登录成功')
+                this.$store.commit('setToken', this.loginForm.username)
                 this.loading = false
                 // this.$router.push('/index')
                 // this.showLogin = false

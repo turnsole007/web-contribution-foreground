@@ -358,17 +358,17 @@ export default {
             }
           }/* ,
           formatter: function (value) {
-            // 这里的value[0].value就是我需要每次显示在图上的数据
+            // 这里的value[2].value就是我需要每次显示在图上的数据
             if (value[2].value <= 0) {
               value[2].value = '0'
             } else {
               var k = 1000
               var sizes = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
-              // 这里是取自然对数，也就是log（k）（value[0].value），求出以k为底的多少次方是value[0].value
+              // 这里是取自然对数，也就是log（k）（value[2].value），求出以k为底的多少次方是value[2].value
               var c = Math.floor(Math.log(value[2].value) / Math.log(k))
               value[2].value = (value[2].value / Math.pow(k, c)).toPrecision(3) + ' ' + sizes[c]
             }
-            // 这里的value[0].name就是每次显示的name
+            // 这里的value[2].name就是每次显示的name
             return value[2].name + value[2].value
           } */
         },
@@ -444,13 +444,18 @@ export default {
             // interval: 0
             formatter: function (value) {
               var txt = []
-              if (value >= 1000 && value <= 10000) {
+              /* if (value >= 1000 && value <= 10000) {
                 txt.push(value / 1000 + 'k')
               } else if (value >= 10000) {
                 txt.push(value / 10000 + 'w')
               } else {
                 txt.push(value)
-              }
+              } */
+              var k = 1000
+              var sizes = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y']
+              // 这里是取自然对数，也就是log（k）（value），求出以k为底的多少次方是value
+              var c = Math.floor(Math.log(value) / Math.log(k))
+              txt.push((value / Math.pow(k, c)) + ' ' + sizes[c])
               return txt
             }
           },

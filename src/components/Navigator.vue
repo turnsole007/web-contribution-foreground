@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-menu
-      :default-active="activeIndex2"
+      :default-active="$route.path"
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
@@ -65,8 +65,6 @@ export default {
   data () {
     return {
       // navgator
-      activeIndex: '/index',
-      activeIndex2: '/index',
       islogin: false,
 
       loginDialogVisible: false,
@@ -74,8 +72,10 @@ export default {
     }
   },
   mounted () {
-    if (localStorage.getItem('token')) {
+    if (this.$store.state.token) {
       this.islogin = true
+    } else {
+      this.islogin = false
     }
   },
   methods: {
@@ -89,7 +89,7 @@ export default {
       this.registerDialogVisible = !this.registerDialogVisible
     },
     logout () {
-      if (localStorage.getItem('token')) {
+      if (this.$store.state.token) {
         axios({
           method: 'POST',
           url: '/api/user/logout'
@@ -98,9 +98,9 @@ export default {
             window.console.log(Response)
             if (Response.data === 'logout success.') {
               // alert('成功退出!')
-              localStorage.removeItem('token')
-              this.$router.push('/index')
+              this.$store.commit('setToken', '')
               this.islogin = false
+              this.$router.push('/index')
             } else {
               alert('登出失败，请再次尝试！')
             }

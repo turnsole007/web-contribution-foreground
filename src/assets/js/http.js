@@ -4,17 +4,17 @@ import router from '../../router'
 axios.defaults.timeout = 5000
 
 // http request 请求拦截器，有token值则配置上token值
-axios.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  err => {
-    return Promise.reject(err)
-  })
+// axios.interceptors.request.use(
+//   config => {
+//     const token = this.$store.state.token
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`
+//     }
+//     return config
+//   },
+//   err => {
+//     return Promise.reject(err)
+//   })
 // http response 拦截器，拦截401状态（token过期），重新登录
 axios.interceptors.response.use(
   response => {
@@ -24,7 +24,8 @@ axios.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
-          localStorage.removeItem('token')
+          // localStorage.removeItem('token')
+          this.$store.commit('setToken', '')
           router.replace({
             path: '/error/401',
             query: {redirect: router.currentRoute.fullPath}

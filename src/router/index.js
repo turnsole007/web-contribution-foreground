@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import store from '../store/store.js'
 import Router from 'vue-router'
 import { Message } from 'element-ui'
 import Index from '@/components/Index'
@@ -12,6 +13,7 @@ import Entity from '@/components/Entity'
 import Page401 from '@/components/401'
 import Page404 from '@/components/404'
 import News from '@/components/News'
+Vue.use(store)
 Vue.use(Router)
 
 const router = new Router({
