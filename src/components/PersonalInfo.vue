@@ -5,8 +5,8 @@
     <div> {{ info }} </div>
     <div style="color:red;"> {{ info.contrbdetail }} </div>
     <div style="color:blue;"> {{ info.contrbdetail[0] }} </div>
-    <div style="color:green;"> {{ info.contrbdetail[0].GithubId }}</div>
-    <div>{{lastWeek }}</div> -->
+    <div style="color:green;"> {{ info.contrbdetail[0].GithubId }}</div>  -->
+    <!-- <div>{{lastWeek }}</div> -->
     <el-row  type="flex" justify="space-around">
       <!-- 基本信息 -->
       <el-col :span="8">
@@ -93,7 +93,7 @@
 
     <div class="week-summary-container">
       <div class="title">本 周 得 分</div>
-      <div class="tip"> {{ getFormatDate(lastWeek.commit_timestap) }} (Mon.) - {{ getFormatSundayDate(lastWeek.commit_timestap) }} (Sun.) 的得分情况</div>
+      <div class="tip"> {{ getFormatDate(getMondayDate()) }} (Mon.) - {{ getFormatSundayDate(getMondayDate()) }} (Sun.) 的得分情况</div>
       <div class="score-container">
         <div class="score"> codescore : {{ Math.round(lastWeek.codescore) }}</div>
         <div class="score"> issuescore : {{ Math.round(lastWeek.issuescore) }}</div>
@@ -225,6 +225,12 @@ export default {
       var date = new Date(timeStamp * 1000)
       // window.console.log(date)
       return formatDate(date, 'yyyy.MM.dd')
+    },
+    getMondayDate () {
+      var date = new Date()
+      var nowDayOfWeek = (date.getDay() === 0) ? 7 : date.getDay() - 1
+      date.setDate(date.getDate() - nowDayOfWeek + 1)
+      return Number(date) / 1000
     },
     getFormatSundayDate (timeStamp) {
       var date = new Date((timeStamp + 6 * 24 * 3600) * 1000)
