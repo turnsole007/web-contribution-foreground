@@ -19,7 +19,7 @@
     "element-ui": "^2.13.0",
     "github-markdown-css": "^4.0.0",
     "jsencrypt": "^3.0.0-rc.1",
-    "marked": "^0.8.0",
+    "marked": "^4.0.10",
     "qs": "^6.9.1",
     "svg-sprite-loader": "^4.1.6",
     "vue": "^2.5.2",
